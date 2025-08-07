@@ -28,14 +28,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.15; /* Độ trong suốt của màu nền */
+            opacity: 0.15;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
         .ai-tool-card:hover::before {
-            opacity: 0.25; /* Tăng độ trong suốt khi hover */
+            opacity: 0.25;
         }
-        /* Gradient cho các thẻ công cụ */
         .gradient-teal::before { background: linear-gradient(to bottom right, #5eead4, #14b8a6); }
         .gradient-indigo::before { background: linear-gradient(to bottom right, #818cf8, #6366f1); }
         .gradient-purple::before { background: linear-gradient(to bottom right, #c084fc, #a855f7); }
@@ -203,8 +202,28 @@
     </div>
 
     <script>
-        // Danh sách 20 danh mục chính
-        let categories = [
+        // Hàm lưu dữ liệu vào Local Storage
+        const saveToLocalStorage = (key, data) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (e) {
+                console.error("Lỗi khi lưu vào Local Storage", e);
+            }
+        };
+
+        // Hàm lấy dữ liệu từ Local Storage
+        const loadFromLocalStorage = (key) => {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (e) {
+                console.error("Lỗi khi lấy dữ liệu từ Local Storage", e);
+                return null;
+            }
+        };
+
+        // Dữ liệu mặc định 20 danh mục
+        const defaultCategories = [
             "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Viết mã", 
             "Marketing & Content", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu", 
             "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập", 
@@ -212,6 +231,56 @@
             "An ninh mạng", "Gaming & Giải trí"
         ];
         
+        // Dữ liệu mặc định 216 công cụ AI
+        const defaultToolsData = [];
+        for (let i = 1; i <= 216; i++) {
+            const categoryIndex = (i - 1) % defaultCategories.length;
+            const category = defaultCategories[categoryIndex];
+            let icon = '🤖';
+            let description = `Mô tả chi tiết cho Công cụ AI ${i} thuộc nhóm ${category}.`;
+            let instructions = `Để bắt đầu, bạn cần truy cập trang web chính thức của công cụ, đăng ký tài khoản và làm theo hướng dẫn trên màn hình.`;
+            let url = `https://example.com/tool-${i}`;
+            
+            // Cập nhật mô tả và icon cho các danh mục cụ thể
+            if (category === "Tạo ảnh") { icon = '🎨'; description = `Công cụ AI chuyên tạo hình ảnh nghệ thuật và chân thực từ các mô tả văn bản chi tiết.`; } 
+            else if (category === "Tạo văn bản") { icon = '💬'; description = `Một mô hình ngôn ngữ lớn có khả năng tạo ra các văn bản sáng tạo, trả lời câu hỏi và thực hiện các tác vụ viết lách.`; }
+            else if (category === "Chỉnh sửa video") { icon = '🎬'; description = `Công cụ AI giúp tự động hóa các tác vụ chỉnh sửa video như cắt ghép, thêm hiệu ứng, và tạo phụ đề.`; }
+            else if (category === "Tổng hợp âm thanh") { icon = '🎵'; description = `Tạo ra các bản nhạc, bài hát hoặc giọng nói tổng hợp với chất lượng cao từ văn bản.`; }
+            else if (category === "Viết mã") { icon = '💻'; description = `Trợ lý AI hỗ trợ lập trình viên trong việc viết mã, sửa lỗi và hoàn thành các đoạn code phức tạp.`; }
+            else if (category === "Marketing & Content") { icon = '📈'; description = `Tạo nội dung quảng cáo, bài viết blog, và phân tích hiệu quả chiến dịch marketing.`; }
+            else if (category === "Thiết kế & UX") { icon = '✨'; description = `Hỗ trợ thiết kế giao diện người dùng, tạo logo và các tài nguyên đồ họa một cách nhanh chóng.`; }
+            else if (category === "Năng suất & Tổ chức") { icon = '📊'; description = `Các công cụ giúp tự động hóa các tác vụ hàng ngày, quản lý dự án và tạo tài liệu, thuyết trình.`; }
+            else if (category === "Phân tích dữ liệu") { icon = '🔍'; description = `Phân tích dữ liệu lớn, tạo báo cáo và biểu đồ trực quan, giúp đưa ra quyết định kinh doanh.`; }
+            else if (category === "E-commerce") { icon = '🛒'; description = `Công cụ AI tối ưu hóa hoạt động kinh doanh trực tuyến, từ quản lý kho hàng đến cá nhân hóa trải nghiệm khách hàng.`; }
+            else if (category === "Sáng tạo nội dung") { icon = '📝'; description = `Hỗ trợ viết kịch bản, tóm tắt sách, hoặc tạo ra các ý tưởng nội dung độc đáo cho mọi nền tảng.`; }
+            else if (category === "Dịch thuật") { icon = '🌐'; description = `Công cụ dịch tự động với độ chính xác cao, hỗ trợ nhiều ngôn ngữ và giữ ngữ cảnh.`; }
+            else if (category === "Giao tiếp") { icon = '🗣️'; description = `Các trợ lý AI giúp lên lịch, trả lời email và quản lý cuộc họp, cải thiện hiệu quả giao tiếp.`; }
+            else if (category === "Giáo dục & Học tập") { icon = '📚'; description = `Cung cấp các công cụ học tập cá nhân hóa, tóm tắt tài liệu và tạo bài kiểm tra.`; }
+            else if (category === "Tài chính") { icon = '💰'; description = `Phân tích thị trường, dự đoán xu hướng và quản lý tài chính cá nhân hoặc doanh nghiệp.`; }
+            else if (category === "Chăm sóc khách hàng") { icon = '🤝'; description = `Tạo các chatbot và hệ thống tự động trả lời, hỗ trợ khách hàng 24/7.`; }
+            else if (category === "Y tế & Sức khỏe") { icon = '❤️‍🩹'; description = `Hỗ trợ chẩn đoán, phân tích dữ liệu y tế và quản lý hồ sơ bệnh án.`; }
+            else if (category === "Bán hàng") { icon = '💼'; description = `Tối ưu hóa quy trình bán hàng, tạo kịch bản, và dự đoán doanh số.`; }
+            else if (category === "An ninh mạng") { icon = '🔒'; description = `Phát hiện các mối đe dọa, phân tích rủi ro và tăng cường bảo mật cho hệ thống mạng.`; }
+            else if (category === "Gaming & Giải trí") { icon = '🎮'; description = `Tạo ra các nhân vật, kịch bản, và nội dung trò chơi, hoặc đề xuất các nội dung giải trí phù hợp.`; }
+            
+            defaultToolsData.push({
+                id: i,
+                name: `Công cụ AI ${i} (${category})`,
+                description: description,
+                instructions: instructions,
+                category: category,
+                icon: icon,
+                url: url
+            });
+        }
+        
+        // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định
+        let categories = loadFromLocalStorage('categories') || defaultCategories;
+        let toolsData = loadFromLocalStorage('toolsData') || defaultToolsData;
+
+        // Cập nhật biến nextToolId để không bị trùng khi thêm công cụ mới
+        let nextToolId = toolsData.length > 0 ? Math.max(...toolsData.map(tool => tool.id)) + 1 : 1;
+
         // Dải màu gradient cho các nút danh mục
         const categoryGradients = [
             'bg-gradient-to-r from-teal-400 to-cyan-500',
@@ -244,48 +313,6 @@
             'gradient-pink', 'gradient-rose', 'gradient-amber', 'gradient-sky'
         ];
 
-        // Dữ liệu 216 công cụ AI, phân bổ đều cho 20 danh mục
-        const toolsData = [];
-        for (let i = 1; i <= 216; i++) {
-            const categoryIndex = (i - 1) % categories.length;
-            const category = categories[categoryIndex];
-            let icon = '🤖';
-            let description = `Mô tả chi tiết cho Công cụ AI ${i} thuộc nhóm ${category}.`;
-            let instructions = `Để bắt đầu, bạn cần truy cập trang web chính thức của công cụ, đăng ký tài khoản và làm theo hướng dẫn trên màn hình.`;
-            let url = `https://example.com/tool-${i}`;
-
-            if (category === "Tạo ảnh") { icon = '🎨'; description = `Công cụ AI chuyên tạo hình ảnh nghệ thuật và chân thực từ các mô tả văn bản chi tiết.`; } 
-            else if (category === "Tạo văn bản") { icon = '💬'; description = `Một mô hình ngôn ngữ lớn có khả năng tạo ra các văn bản sáng tạo, trả lời câu hỏi và thực hiện các tác vụ viết lách.`; }
-            else if (category === "Chỉnh sửa video") { icon = '🎬'; description = `Công cụ AI giúp tự động hóa các tác vụ chỉnh sửa video như cắt ghép, thêm hiệu ứng, và tạo phụ đề.`; }
-            else if (category === "Tổng hợp âm thanh") { icon = '🎵'; description = `Tạo ra các bản nhạc, bài hát hoặc giọng nói tổng hợp với chất lượng cao từ văn bản.`; }
-            else if (category === "Viết mã") { icon = '💻'; description = `Trợ lý AI hỗ trợ lập trình viên trong việc viết mã, sửa lỗi và hoàn thành các đoạn code phức tạp.`; }
-            else if (category === "Marketing & Content") { icon = '📈'; description = `Tạo nội dung quảng cáo, bài viết blog, và phân tích hiệu quả chiến dịch marketing.`; }
-            else if (category === "Thiết kế & UX") { icon = '✨'; description = `Hỗ trợ thiết kế giao diện người dùng, tạo logo và các tài nguyên đồ họa một cách nhanh chóng.`; }
-            else if (category === "Năng suất & Tổ chức") { icon = '📊'; description = `Các công cụ giúp tự động hóa các tác vụ hàng ngày, quản lý dự án và tạo tài liệu, thuyết trình.`; }
-            else if (category === "Phân tích dữ liệu") { icon = '🔍'; description = `Phân tích dữ liệu lớn, tạo báo cáo và biểu đồ trực quan, giúp đưa ra quyết định kinh doanh.`; }
-            else if (category === "E-commerce") { icon = '🛒'; description = `Công cụ AI tối ưu hóa hoạt động kinh doanh trực tuyến, từ quản lý kho hàng đến cá nhân hóa trải nghiệm khách hàng.`; }
-            else if (category === "Sáng tạo nội dung") { icon = '📝'; description = `Hỗ trợ viết kịch bản, tóm tắt sách, hoặc tạo ra các ý tưởng nội dung độc đáo cho mọi nền tảng.`; }
-            else if (category === "Dịch thuật") { icon = '🌐'; description = `Công cụ dịch tự động với độ chính xác cao, hỗ trợ nhiều ngôn ngữ và giữ ngữ cảnh.`; }
-            else if (category === "Giao tiếp") { icon = '🗣️'; description = `Các trợ lý AI giúp lên lịch, trả lời email và quản lý cuộc họp, cải thiện hiệu quả giao tiếp.`; }
-            else if (category === "Giáo dục & Học tập") { icon = '📚'; description = `Cung cấp các công cụ học tập cá nhân hóa, tóm tắt tài liệu và tạo bài kiểm tra.`; }
-            else if (category === "Tài chính") { icon = '💰'; description = `Phân tích thị trường, dự đoán xu hướng và quản lý tài chính cá nhân hoặc doanh nghiệp.`; }
-            else if (category === "Chăm sóc khách hàng") { icon = '🤝'; description = `Tạo các chatbot và hệ thống tự động trả lời, hỗ trợ khách hàng 24/7.`; }
-            else if (category === "Y tế & Sức khỏe") { icon = '❤️‍🩹'; description = `Hỗ trợ chẩn đoán, phân tích dữ liệu y tế và quản lý hồ sơ bệnh án.`; }
-            else if (category === "Bán hàng") { icon = '💼'; description = `Tối ưu hóa quy trình bán hàng, tạo kịch bản, và dự đoán doanh số.`; }
-            else if (category === "An ninh mạng") { icon = '🔒'; description = `Phát hiện các mối đe dọa, phân tích rủi ro và tăng cường bảo mật cho hệ thống mạng.`; }
-            else if (category === "Gaming & Giải trí") { icon = '🎮'; description = `Tạo ra các nhân vật, kịch bản, và nội dung trò chơi, hoặc đề xuất các nội dung giải trí phù hợp.`; }
-            
-            toolsData.push({
-                id: i,
-                name: `Công cụ AI ${i} (${category})`,
-                description: description,
-                instructions: instructions,
-                category: category,
-                icon: icon,
-                url: url
-            });
-        }
-
         const toolsContainer = document.getElementById('tools-container');
         const searchInput = document.getElementById('search-input');
         const filterContainer = document.getElementById('filter-container');
@@ -307,7 +334,6 @@
         let isAdmin = false;
         let currentFilteredTools = [...toolsData];
         let activeCategory = 'all';
-        let nextToolId = toolsData.length + 1;
         let modalActionType = '';
         
         const showNotification = (message, isError = false) => {
@@ -546,6 +572,7 @@
                 const newCategoryName = document.getElementById('category-name-input').value;
                 if (newCategoryName && !categories.includes(newCategoryName)) {
                     categories.push(newCategoryName);
+                    saveToLocalStorage('categories', categories);
                     createFilterButtons();
                     modalContainer.classList.add('hidden');
                     showNotification(`Đã thêm danh mục "${newCategoryName}" thành công!`);
@@ -566,6 +593,8 @@
                             }
                         });
                         activeCategory = newName;
+                        saveToLocalStorage('categories', categories);
+                        saveToLocalStorage('toolsData', toolsData);
                         createFilterButtons();
                         renderTools(toolsData.filter(tool => tool.category === newName));
                         modalContainer.classList.add('hidden');
@@ -583,6 +612,9 @@
                     const newToolsData = toolsData.filter(tool => tool.category !== categoryToDelete);
                     toolsData.length = 0;
                     toolsData.push(...newToolsData);
+                    
+                    saveToLocalStorage('categories', categories);
+                    saveToLocalStorage('toolsData', toolsData);
                     
                     activeCategory = 'all';
                     createFilterButtons();
@@ -611,6 +643,7 @@
                         category: activeCategory
                     };
                     toolsData.push(newTool);
+                    saveToLocalStorage('toolsData', toolsData);
                     currentFilteredTools = toolsData.filter(tool => tool.category === activeCategory);
                     renderTools(currentFilteredTools);
                     modalContainer.classList.add('hidden');
@@ -668,6 +701,7 @@
                     card.querySelector('.edit-btn').classList.remove('hidden');
                     card.querySelector('.save-btn').classList.add('hidden');
 
+                    saveToLocalStorage('toolsData', toolsData);
                     showNotification('Đã lưu thành công!');
                 }
             }
