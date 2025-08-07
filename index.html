@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Công cụ AI</title>
+    <!-- Tải Tailwind CSS từ CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #e0f2fe, #fff);
+        }
+        .ai-tool-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .ai-tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15; /* Độ trong suốt của màu nền */
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .ai-tool-card:hover::before {
+            opacity: 0.25; /* Tăng độ trong suốt khi hover */
+        }
+        /* Gradient cho các thẻ công cụ */
+        .gradient-teal::before { background: linear-gradient(to bottom right, #5eead4, #14b8a6); }
+        .gradient-indigo::before { background: linear-gradient(to bottom right, #818cf8, #6366f1); }
+        .gradient-purple::before { background: linear-gradient(to bottom right, #c084fc, #a855f7); }
+        .gradient-green::before { background: linear-gradient(to bottom right, #86efac, #4ade80); }
+        .gradient-yellow::before { background: linear-gradient(to bottom right, #fde047, #facc15); }
+        .gradient-orange::before { background: linear-gradient(to bottom right, #fdba74, #fb923c); }
+        .gradient-fuchsia::before { background: linear-gradient(to bottom right, #e879f9, #d946ef); }
+        .gradient-lime::before { background: linear-gradient(to bottom right, #a3e635, #84cc16); }
+        .gradient-cyan::before { background: linear-gradient(to bottom right, #22d3ee, #06b6d4); }
+        .gradient-violet::before { background: linear-gradient(to bottom right, #a78bfa, #8b5cf6); }
+        .gradient-emerald::before { background: linear-gradient(to bottom right, #6ee7b7, #34d399); }
+        .gradient-blue::before { background: linear-gradient(to bottom right, #93c5fd, #60a5fa); }
+        .gradient-pink::before { background: linear-gradient(to bottom right, #f472b6, #ec4899); }
+        .gradient-rose::before { background: linear-gradient(to bottom right, #fda4af, #f43f5e); }
+        .gradient-amber::before { background: linear-gradient(to bottom right, #fcd34d, #fbbf24); }
+        .gradient-sky::before { background: linear-gradient(to bottom right, #7dd3fc, #38bdf8); }
+        
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+        .filter-btn.active {
+            background-color: #ffffff !important;
+            color: #1d4ed8;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .editable-field {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .editable-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .modal-bg {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .toast-notification {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 1rem 1.5rem;
+            background-color: #10b981;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .category-scroll-container {
+            max-height: 500px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #a0aec0 #edf2f7;
+        }
+        .category-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .category-scroll-container::-webkit-scrollbar-thumb {
+            background-color: #a0aec0;
+            border-radius: 4px;
+        }
+        .category-scroll-container::-webkit-scrollbar-track {
+            background-color: #edf2f7;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-sky-600 to-indigo-700 shadow-lg rounded-b-3xl mx-4 mt-4 md:mx-10 md:mt-6 py-6">
+        <div class="container mx-auto px-6 md:flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-white tracking-tight text-center md:text-left mb-4 md:mb-0">
+                Thư viện Công cụ AI
+            </h1>
+            <div class="flex flex-col md:flex-row items-center w-full md:w-1/3 space-y-4 md:space-y-0 md:space-x-4">
+                <input type="text" id="search-input" placeholder="Tìm kiếm công cụ..." class="w-full p-3 rounded-full border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-200 transition-all duration-300 shadow-sm">
+                <button id="admin-toggle-btn" class="w-full md:w-auto p-3 rounded-full bg-slate-100 text-slate-800 font-bold hover:bg-slate-300 transition-colors duration-300 shadow-md">
+                    Quản trị
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container mx-auto px-4 py-8 md:px-6 md:py-12">
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <!-- Sidebar for Filters and Admin Buttons -->
+            <aside class="md:w-1/4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 h-fit sticky top-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-slate-900">Danh mục</h2>
+                </div>
+                <!-- Vùng chứa các nút danh mục, có thanh cuộn dọc -->
+                <div id="filter-container" class="space-y-2 category-scroll-container">
+                    <!-- Category filter buttons will be dynamically added here -->
+                </div>
+                <!-- Admin buttons for categories (visible only in admin mode) -->
+                <div id="admin-category-actions" class="mt-4 space-y-2 hidden border-t pt-4 border-slate-200">
+                    <button id="add-category-btn" class="w-full p-3 rounded-lg bg-emerald-500 text-white font-bold hover:bg-emerald-600 transition-colors duration-300">
+                        Thêm Danh mục
+                    </button>
+                    <button id="rename-category-btn" class="w-full p-3 rounded-lg bg-amber-500 text-white font-bold hover:bg-amber-600 transition-colors duration-300 hidden">
+                        Đổi tên danh mục
+                    </button>
+                    <button id="delete-category-btn" class="w-full p-3 rounded-lg bg-rose-600 text-white font-bold hover:bg-rose-700 transition-colors duration-300 hidden">
+                        Xoá danh mục
+                    </button>
+                </div>
+            </aside>
+
+            <!-- AI Tools Grid and Add Tool button -->
+            <section class="md:w-3/4">
+                <div class="flex justify-end mb-4">
+                    <!-- Add Tool button (visible only to admin) -->
+                    <button id="add-tool-btn" class="p-3 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 transition-colors duration-300 hidden">
+                        Thêm Công cụ mới
+                    </button>
+                </div>
+                <div id="tools-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- AI Tool Cards will be injected here by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gradient-to-r from-indigo-700 to-sky-600 text-white rounded-t-3xl shadow-inner mx-4 mb-4 md:mx-10 md:mb-6">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 YourCompany. Mọi quyền được bảo lưu.</p>
+        </div>
+    </footer>
+    
+    <!-- Custom Modal for various inputs and messages -->
+    <div id="modal-container" class="modal-bg fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg">
+            <h3 id="modal-title" class="text-xl font-bold mb-4"></h3>
+            <p id="modal-message" class="text-sm text-rose-600 mb-4 hidden"></p>
+            <div id="modal-content">
+                <!-- Content will be injected here -->
+            </div>
+            <div class="mt-6 flex justify-end space-x-2">
+                <button id="modal-cancel-btn" class="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors duration-200">Hủy</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification element -->
+    <div id="toast-notification" class="toast-notification">
+        <span id="notification-message"></span>
+    </div>
+
+    <script>
+        // Danh sách 20 danh mục chính
+        let categories = [
+            "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Viết mã", 
+            "Marketing & Content", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu", 
+            "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập", 
+            "Tài chính", "Chăm sóc khách hàng", "Y tế & Sức khỏe", "Bán hàng", 
+            "An ninh mạng", "Gaming & Giải trí"
+        ];
+        
+        // Dải màu gradient cho các nút danh mục
+        const categoryGradients = [
+            'bg-gradient-to-r from-teal-400 to-cyan-500',
+            'bg-gradient-to-r from-indigo-400 to-blue-500',
+            'bg-gradient-to-r from-purple-400 to-pink-500',
+            'bg-gradient-to-r from-green-400 to-emerald-500',
+            'bg-gradient-to-r from-yellow-400 to-amber-500',
+            'bg-gradient-to-r from-orange-400 to-red-500',
+            'bg-gradient-to-r from-fuchsia-400 to-rose-500',
+            'bg-gradient-to-r from-lime-400 to-green-500',
+            'bg-gradient-to-r from-cyan-400 to-sky-500',
+            'bg-gradient-to-r from-violet-400 to-fuchsia-500',
+            'bg-gradient-to-r from-emerald-400 to-teal-500',
+            'bg-gradient-to-r from-blue-400 to-indigo-500',
+            'bg-gradient-to-r from-pink-400 to-purple-500',
+            'bg-gradient-to-r from-rose-400 to-red-500',
+            'bg-gradient-to-r from-amber-400 to-yellow-500',
+            'bg-gradient-to-r from-sky-400 to-cyan-500',
+            'bg-gradient-to-r from-teal-400 to-green-500',
+            'bg-gradient-to-r from-indigo-400 to-violet-500',
+            'bg-gradient-to-r from-fuchsia-400 to-pink-500',
+            'bg-gradient-to-r from-lime-400 to-yellow-500'
+        ];
+        
+        // Dải màu gradient nhẹ nhàng cho các thẻ công cụ
+        const toolCardGradients = [
+            'gradient-teal', 'gradient-indigo', 'gradient-purple', 'gradient-green',
+            'gradient-yellow', 'gradient-orange', 'gradient-fuchsia', 'gradient-lime',
+            'gradient-cyan', 'gradient-violet', 'gradient-emerald', 'gradient-blue',
+            'gradient-pink', 'gradient-rose', 'gradient-amber', 'gradient-sky'
+        ];
+
+        // Dữ liệu 216 công cụ AI, phân bổ đều cho 20 danh mục
+        const toolsData = [];
+        for (let i = 1; i <= 216; i++) {
+            const categoryIndex = (i - 1) % categories.length;
+            const category = categories[categoryIndex];
+            let icon = '🤖';
+            let description = `Mô tả chi tiết cho Công cụ AI ${i} thuộc nhóm ${category}.`;
+            let instructions = `Để bắt đầu, bạn cần truy cập trang web chính thức của công cụ, đăng ký tài khoản và làm theo hướng dẫn trên màn hình.`;
+            let url = `https://example.com/tool-${i}`;
+
+            if (category === "Tạo ảnh") { icon = '🎨'; description = `Công cụ AI chuyên tạo hình ảnh nghệ thuật và chân thực từ các mô tả văn bản chi tiết.`; } 
+            else if (category === "Tạo văn bản") { icon = '💬'; description = `Một mô hình ngôn ngữ lớn có khả năng tạo ra các văn bản sáng tạo, trả lời câu hỏi và thực hiện các tác vụ viết lách.`; }
+            else if (category === "Chỉnh sửa video") { icon = '🎬'; description = `Công cụ AI giúp tự động hóa các tác vụ chỉnh sửa video như cắt ghép, thêm hiệu ứng, và tạo phụ đề.`; }
+            else if (category === "Tổng hợp âm thanh") { icon = '🎵'; description = `Tạo ra các bản nhạc, bài hát hoặc giọng nói tổng hợp với chất lượng cao từ văn bản.`; }
+            else if (category === "Viết mã") { icon = '💻'; description = `Trợ lý AI hỗ trợ lập trình viên trong việc viết mã, sửa lỗi và hoàn thành các đoạn code phức tạp.`; }
+            else if (category === "Marketing & Content") { icon = '📈'; description = `Tạo nội dung quảng cáo, bài viết blog, và phân tích hiệu quả chiến dịch marketing.`; }
+            else if (category === "Thiết kế & UX") { icon = '✨'; description = `Hỗ trợ thiết kế giao diện người dùng, tạo logo và các tài nguyên đồ họa một cách nhanh chóng.`; }
+            else if (category === "Năng suất & Tổ chức") { icon = '📊'; description = `Các công cụ giúp tự động hóa các tác vụ hàng ngày, quản lý dự án và tạo tài liệu, thuyết trình.`; }
+            else if (category === "Phân tích dữ liệu") { icon = '🔍'; description = `Phân tích dữ liệu lớn, tạo báo cáo và biểu đồ trực quan, giúp đưa ra quyết định kinh doanh.`; }
+            else if (category === "E-commerce") { icon = '🛒'; description = `Công cụ AI tối ưu hóa hoạt động kinh doanh trực tuyến, từ quản lý kho hàng đến cá nhân hóa trải nghiệm khách hàng.`; }
+            else if (category === "Sáng tạo nội dung") { icon = '📝'; description = `Hỗ trợ viết kịch bản, tóm tắt sách, hoặc tạo ra các ý tưởng nội dung độc đáo cho mọi nền tảng.`; }
+            else if (category === "Dịch thuật") { icon = '🌐'; description = `Công cụ dịch tự động với độ chính xác cao, hỗ trợ nhiều ngôn ngữ và giữ ngữ cảnh.`; }
+            else if (category === "Giao tiếp") { icon = '🗣️'; description = `Các trợ lý AI giúp lên lịch, trả lời email và quản lý cuộc họp, cải thiện hiệu quả giao tiếp.`; }
+            else if (category === "Giáo dục & Học tập") { icon = '📚'; description = `Cung cấp các công cụ học tập cá nhân hóa, tóm tắt tài liệu và tạo bài kiểm tra.`; }
+            else if (category === "Tài chính") { icon = '💰'; description = `Phân tích thị trường, dự đoán xu hướng và quản lý tài chính cá nhân hoặc doanh nghiệp.`; }
+            else if (category === "Chăm sóc khách hàng") { icon = '🤝'; description = `Tạo các chatbot và hệ thống tự động trả lời, hỗ trợ khách hàng 24/7.`; }
+            else if (category === "Y tế & Sức khỏe") { icon = '❤️‍🩹'; description = `Hỗ trợ chẩn đoán, phân tích dữ liệu y tế và quản lý hồ sơ bệnh án.`; }
+            else if (category === "Bán hàng") { icon = '💼'; description = `Tối ưu hóa quy trình bán hàng, tạo kịch bản, và dự đoán doanh số.`; }
+            else if (category === "An ninh mạng") { icon = '🔒'; description = `Phát hiện các mối đe dọa, phân tích rủi ro và tăng cường bảo mật cho hệ thống mạng.`; }
+            else if (category === "Gaming & Giải trí") { icon = '🎮'; description = `Tạo ra các nhân vật, kịch bản, và nội dung trò chơi, hoặc đề xuất các nội dung giải trí phù hợp.`; }
+            
+            toolsData.push({
+                id: i,
+                name: `Công cụ AI ${i} (${category})`,
+                description: description,
+                instructions: instructions,
+                category: category,
+                icon: icon,
+                url: url
+            });
+        }
+
+        const toolsContainer = document.getElementById('tools-container');
+        const searchInput = document.getElementById('search-input');
+        const filterContainer = document.getElementById('filter-container');
+        const adminToggleButton = document.getElementById('admin-toggle-btn');
+        const adminCategoryActions = document.getElementById('admin-category-actions');
+        const addCategoryBtn = document.getElementById('add-category-btn');
+        const renameCategoryBtn = document.getElementById('rename-category-btn');
+        const deleteCategoryBtn = document.getElementById('delete-category-btn');
+        const addToolBtn = document.getElementById('add-tool-btn');
+        const modalContainer = document.getElementById('modal-container');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalContent = document.getElementById('modal-content');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+        const toastNotification = document.getElementById('toast-notification');
+        const notificationMessage = document.getElementById('notification-message');
+        
+        let isAdmin = false;
+        let currentFilteredTools = [...toolsData];
+        let activeCategory = 'all';
+        let nextToolId = toolsData.length + 1;
+        let modalActionType = '';
+        
+        const showNotification = (message, isError = false) => {
+            notificationMessage.textContent = message;
+            if (isError) {
+                toastNotification.classList.remove('bg-emerald-500');
+                toastNotification.classList.add('bg-rose-500');
+            } else {
+                toastNotification.classList.remove('bg-rose-500');
+                toastNotification.classList.add('bg-emerald-500');
+            }
+            toastNotification.classList.add('show');
+            setTimeout(() => {
+                toastNotification.classList.remove('show');
+            }, 3000);
+        };
+
+        const getToolCardGradientClass = (categoryName) => {
+            const categoryIndex = categories.indexOf(categoryName);
+            if (categoryIndex !== -1) {
+                return toolCardGradients[categoryIndex % toolCardGradients.length];
+            }
+            return '';
+        };
+
+        const renderTools = (tools) => {
+            toolsContainer.innerHTML = tools.map(tool => {
+                const cardGradientClass = getToolCardGradientClass(tool.category);
+
+                if (isAdmin) {
+                    return `
+                        <div class="ai-tool-card bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between ${cardGradientClass}" data-id="${tool.id}">
+                            <div>
+                                <div class="flex items-center mb-4">
+                                    <span class="text-3xl mr-4">${tool.icon}</span>
+                                    <h3 class="text-xl font-bold text-slate-900 tool-name-display">${tool.name}</h3>
+                                    <input type="text" value="${tool.name}" class="text-xl font-bold text-slate-900 editable-field hidden" data-field="name">
+                                </div>
+                                <p class="text-slate-600 leading-relaxed mb-4 tool-description-display">${tool.description}</p>
+                                <textarea class="text-slate-600 leading-relaxed mb-4 editable-field hidden" data-field="description">${tool.description}</textarea>
+                                
+                                <p class="text-slate-500 text-sm italic mb-4 tool-instructions-display">
+                                    **Hướng dẫn sử dụng:** ${tool.instructions}
+                                </p>
+                                <textarea class="text-slate-500 text-sm italic mb-4 editable-field hidden" data-field="instructions">${tool.instructions.replace('**Hướng dẫn sử dụng:** ', '')}</textarea>
+                                
+                                <input type="text" value="${tool.url}" class="text-slate-500 text-sm italic mb-4 editable-field hidden" data-field="url">
+                                <span class="inline-block mt-2 text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1 rounded-full">${tool.category}</span>
+                            </div>
+                            <div class="mt-6 flex space-x-2">
+                                <button class="w-full text-center bg-sky-600 text-white font-bold py-3 px-6 rounded-full hover:bg-sky-700 transition-colors duration-200 edit-btn">
+                                    Chỉnh sửa
+                                </button>
+                                <button class="w-full text-center bg-emerald-500 text-white font-bold py-3 px-6 rounded-full hover:bg-emerald-600 transition-colors duration-200 save-btn hidden">
+                                    Lưu
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="ai-tool-card bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between ${cardGradientClass}">
+                            <div>
+                                <div class="flex items-center mb-4">
+                                    <span class="text-3xl mr-4">${tool.icon}</span>
+                                    <h3 class="text-xl font-bold text-slate-900">${tool.name}</h3>
+                                </div>
+                                <p class="text-slate-600 leading-relaxed mb-4">${tool.description}</p>
+                                <p class="text-slate-500 text-sm italic mb-4">
+                                    **Hướng dẫn sử dụng:** ${tool.instructions}
+                                </p>
+                                <span class="inline-block mt-2 text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1 rounded-full">${tool.category}</span>
+                            </div>
+                            <a href="${tool.url}" target="_blank" class="mt-6 inline-block w-full text-center bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold py-3 px-6 rounded-full hover:opacity-90 transition-opacity duration-200">
+                                Truy cập Công cụ
+                            </a>
+                        </div>
+                    `;
+                }
+            }).join('');
+        };
+
+        const createFilterButtons = () => {
+            const uniqueCategories = [...new Set(categories)];
+            
+            let allButtonHtml = `
+                <button class="filter-btn block w-full text-left py-2 px-4 rounded-lg font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors duration-200 ${activeCategory === 'all' ? 'active' : ''}" data-category="all">
+                    Tất cả
+                </button>`;
+            
+            const categoryButtonsHtml = uniqueCategories.map((category, index) => {
+                const gradientClass = categoryGradients[index % categoryGradients.length];
+                return `
+                    <button class="filter-btn block w-full text-left py-2 px-4 rounded-lg text-white font-medium ${gradientClass} hover:opacity-80 transition-opacity duration-200" data-category="${category}">
+                        ${category}
+                    </button>
+                `;
+            }).join('');
+
+            filterContainer.innerHTML = allButtonHtml + categoryButtonsHtml;
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const newActiveCategory = button.dataset.category;
+                    if (activeCategory === newActiveCategory) return;
+                    activeCategory = newActiveCategory;
+
+                    const filteredTools = activeCategory === 'all'
+                        ? toolsData
+                        : toolsData.filter(tool => tool.category === activeCategory);
+                    
+                    currentFilteredTools = filteredTools;
+                    renderTools(currentFilteredTools);
+                    
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    if (isAdmin && activeCategory !== 'all') {
+                        addToolBtn.classList.remove('hidden');
+                        renameCategoryBtn.classList.remove('hidden');
+                        deleteCategoryBtn.classList.remove('hidden');
+                    } else {
+                        addToolBtn.classList.add('hidden');
+                        renameCategoryBtn.classList.add('hidden');
+                        deleteCategoryBtn.classList.add('hidden');
+                    }
+                });
+            });
+        };
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredTools = toolsData.filter(tool => 
+                tool.name.toLowerCase().includes(searchTerm) ||
+                tool.description.toLowerCase().includes(searchTerm)
+            );
+            
+            currentFilteredTools = filteredTools;
+            renderTools(currentFilteredTools);
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            addToolBtn.classList.add('hidden');
+            renameCategoryBtn.classList.add('hidden');
+            deleteCategoryBtn.classList.add('hidden');
+        });
+
+        adminToggleButton.addEventListener('click', () => {
+            if (isAdmin) {
+                isAdmin = false;
+                adminToggleButton.textContent = 'Quản trị';
+                adminToggleButton.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+                adminToggleButton.classList.add('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
+                adminCategoryActions.classList.add('hidden');
+                addToolBtn.classList.add('hidden');
+                renameCategoryBtn.classList.add('hidden');
+                deleteCategoryBtn.classList.add('hidden');
+                renderTools(currentFilteredTools);
+            } else {
+                modalActionType = 'admin-login';
+                modalContainer.classList.remove('hidden');
+                modalTitle.textContent = 'Nhập mật khẩu quản trị';
+                modalContent.innerHTML = `<input type="password" id="password-input" class="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">`;
+                document.getElementById('password-input').focus();
+                modalMessage.classList.add('hidden');
+            }
+        });
+
+        addCategoryBtn.addEventListener('click', () => {
+            modalActionType = 'add-category';
+            modalContainer.classList.remove('hidden');
+            modalTitle.textContent = 'Thêm Danh mục mới';
+            modalContent.innerHTML = `<input type="text" id="category-name-input" placeholder="Tên danh mục..." class="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">`;
+            document.getElementById('category-name-input').focus();
+            modalMessage.classList.add('hidden');
+        });
+
+        renameCategoryBtn.addEventListener('click', () => {
+            if (activeCategory === 'all') return;
+            modalActionType = 'rename-category';
+            modalContainer.classList.remove('hidden');
+            modalTitle.textContent = `Đổi tên danh mục "${activeCategory}"`;
+            modalContent.innerHTML = `<input type="text" id="new-category-name-input" value="${activeCategory}" class="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">`;
+            document.getElementById('new-category-name-input').focus();
+            modalMessage.classList.add('hidden');
+        });
+
+        deleteCategoryBtn.addEventListener('click', () => {
+            if (activeCategory === 'all') return;
+            modalActionType = 'delete-category';
+            modalContainer.classList.remove('hidden');
+            modalTitle.textContent = `Xác nhận xoá danh mục`;
+            modalContent.innerHTML = `<p class="text-sm text-rose-600">Bạn có chắc chắn muốn xoá danh mục **"${activeCategory}"** và **tất cả** các công cụ bên trong không? Thao tác này không thể hoàn tác.</p>`;
+            modalMessage.classList.add('hidden');
+        });
+
+        addToolBtn.addEventListener('click', () => {
+            modalActionType = 'add-tool';
+            modalContainer.classList.remove('hidden');
+            modalTitle.textContent = `Thêm công cụ vào danh mục "${activeCategory}"`;
+            modalContent.innerHTML = `
+                <div class="space-y-4">
+                    <input type="text" id="tool-name-input" placeholder="Tên công cụ..." class="w-full p-3 border border-slate-300 rounded-lg">
+                    <input type="text" id="tool-icon-input" placeholder="Icon (ví dụ: 🎨)" class="w-full p-3 border border-slate-300 rounded-lg">
+                    <textarea id="tool-description-input" placeholder="Mô tả..." rows="3" class="w-full p-3 border border-slate-300 rounded-lg"></textarea>
+                    <textarea id="tool-instructions-input" placeholder="Hướng dẫn sử dụng..." rows="3" class="w-full p-3 border border-slate-300 rounded-lg"></textarea>
+                    <input type="text" id="tool-url-input" placeholder="URL trang web..." class="w-full p-3 border border-slate-300 rounded-lg">
+                </div>
+            `;
+            document.getElementById('tool-name-input').focus();
+            modalMessage.classList.add('hidden');
+        });
+
+        modalConfirmBtn.addEventListener('click', () => {
+            if (modalActionType === 'admin-login') {
+                const password = document.getElementById('password-input').value;
+                if (password === 'hakadmin') {
+                    isAdmin = true;
+                    adminToggleButton.textContent = 'Thoát Quản trị';
+                    adminToggleButton.classList.remove('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
+                    adminToggleButton.classList.add('bg-rose-600', 'hover:bg-rose-700');
+                    adminCategoryActions.classList.remove('hidden');
+                    if (activeCategory !== 'all') {
+                        addToolBtn.classList.remove('hidden');
+                        renameCategoryBtn.classList.remove('hidden');
+                        deleteCategoryBtn.classList.remove('hidden');
+                    }
+                    modalContainer.classList.add('hidden');
+                    renderTools(currentFilteredTools);
+                } else {
+                    modalMessage.textContent = 'Mật khẩu không đúng, vui lòng thử lại.';
+                    modalMessage.classList.remove('hidden');
+                    document.getElementById('password-input').value = '';
+                }
+            } else if (modalActionType === 'add-category') {
+                const newCategoryName = document.getElementById('category-name-input').value;
+                if (newCategoryName && !categories.includes(newCategoryName)) {
+                    categories.push(newCategoryName);
+                    createFilterButtons();
+                    modalContainer.classList.add('hidden');
+                    showNotification(`Đã thêm danh mục "${newCategoryName}" thành công!`);
+                } else {
+                    modalMessage.textContent = 'Tên danh mục không hợp lệ hoặc đã tồn tại.';
+                    modalMessage.classList.remove('hidden');
+                }
+            } else if (modalActionType === 'rename-category') {
+                const newName = document.getElementById('new-category-name-input').value;
+                if (newName && !categories.includes(newName)) {
+                    const oldName = activeCategory;
+                    const index = categories.indexOf(oldName);
+                    if (index !== -1) {
+                        categories[index] = newName;
+                        toolsData.forEach(tool => {
+                            if (tool.category === oldName) {
+                                tool.category = newName;
+                            }
+                        });
+                        activeCategory = newName;
+                        createFilterButtons();
+                        renderTools(toolsData.filter(tool => tool.category === newName));
+                        modalContainer.classList.add('hidden');
+                        showNotification(`Đã đổi tên danh mục thành "${newName}" thành công!`);
+                    }
+                } else {
+                    modalMessage.textContent = 'Tên danh mục không hợp lệ hoặc đã tồn tại.';
+                    modalMessage.classList.remove('hidden');
+                }
+            } else if (modalActionType === 'delete-category') {
+                const categoryToDelete = activeCategory;
+                if (categoryToDelete !== 'all') {
+                    const newCategories = categories.filter(cat => cat !== categoryToDelete);
+                    categories = newCategories;
+                    const newToolsData = toolsData.filter(tool => tool.category !== categoryToDelete);
+                    toolsData.length = 0;
+                    toolsData.push(...newToolsData);
+                    
+                    activeCategory = 'all';
+                    createFilterButtons();
+                    renderTools(toolsData);
+                    modalContainer.classList.add('hidden');
+                    showNotification(`Đã xóa danh mục "${categoryToDelete}" và các công cụ liên quan.`);
+                } else {
+                    modalContainer.classList.add('hidden');
+                    showNotification('Không thể xóa danh mục "Tất cả".', true);
+                }
+            } else if (modalActionType === 'add-tool') {
+                const name = document.getElementById('tool-name-input').value;
+                const description = document.getElementById('tool-description-input').value;
+                const instructions = document.getElementById('tool-instructions-input').value;
+                const url = document.getElementById('tool-url-input').value;
+                const icon = document.getElementById('tool-icon-input').value || '🤖';
+
+                if (name && description && instructions && url) {
+                    const newTool = {
+                        id: nextToolId++,
+                        name,
+                        description,
+                        instructions,
+                        url,
+                        icon,
+                        category: activeCategory
+                    };
+                    toolsData.push(newTool);
+                    currentFilteredTools = toolsData.filter(tool => tool.category === activeCategory);
+                    renderTools(currentFilteredTools);
+                    modalContainer.classList.add('hidden');
+                    showNotification('Đã thêm công cụ mới thành công!');
+                } else {
+                    modalMessage.textContent = 'Vui lòng điền đầy đủ các trường thông tin.';
+                    modalMessage.classList.remove('hidden');
+                }
+            }
+        });
+
+        modalCancelBtn.addEventListener('click', () => {
+            modalContainer.classList.add('hidden');
+        });
+
+        toolsContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.ai-tool-card');
+            if (!card) return;
+            const toolId = parseInt(card.dataset.id);
+            const toolIndex = toolsData.findIndex(tool => tool.id === toolId);
+
+            if (e.target.classList.contains('edit-btn')) {
+                const fields = card.querySelectorAll('.editable-field');
+                const displays = card.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display, .tool-url-display');
+                
+                fields.forEach(field => field.classList.remove('hidden'));
+                displays.forEach(display => display.classList.add('hidden'));
+                
+                card.querySelector('.edit-btn').classList.add('hidden');
+                card.querySelector('.save-btn').classList.remove('hidden');
+            }
+
+            if (e.target.classList.contains('save-btn')) {
+                if (toolIndex !== -1) {
+                    const name = card.querySelector('[data-field="name"]').value;
+                    const description = card.querySelector('[data-field="description"]').value;
+                    const instructions = card.querySelector('[data-field="instructions"]').value;
+                    const url = card.querySelector('[data-field="url"]').value;
+
+                    toolsData[toolIndex].name = name;
+                    toolsData[toolIndex].description = description;
+                    toolsData[toolIndex].instructions = instructions;
+                    toolsData[toolIndex].url = url;
+
+                    card.querySelector('.tool-name-display').textContent = name;
+                    card.querySelector('.tool-description-display').textContent = description;
+                    card.querySelector('.tool-instructions-display').innerHTML = `**Hướng dẫn sử dụng:** ${instructions}`;
+                    
+                    const fields = card.querySelectorAll('.editable-field');
+                    const displays = card.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display');
+                    
+                    fields.forEach(field => field.classList.add('hidden'));
+                    displays.forEach(display => display.classList.remove('hidden'));
+
+                    card.querySelector('.edit-btn').classList.remove('hidden');
+                    card.querySelector('.save-btn').classList.add('hidden');
+
+                    showNotification('Đã lưu thành công!');
+                }
+            }
+        });
+
+        createFilterButtons();
+        renderTools(toolsData);
+    </script>
+</body>
+</html>
