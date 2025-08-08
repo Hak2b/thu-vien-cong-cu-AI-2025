@@ -116,7 +116,6 @@
     </style>
 </head>
 <body class="text-slate-800 antialiased">
-
     <!-- Header Section -->
     <header class="bg-gradient-to-r from-sky-600 to-indigo-700 shadow-lg rounded-b-3xl mx-4 mt-4 md:mx-10 md:mt-6 py-6">
         <div class="container mx-auto px-6 md:flex justify-between items-center">
@@ -131,11 +130,9 @@
             </div>
         </div>
     </header>
-
     <!-- Main Content Section -->
     <main class="container mx-auto px-4 py-8 md:px-6 md:py-12">
         <div class="flex flex-col md:flex-row gap-8">
-            
             <!-- Sidebar for Filters and Admin Buttons -->
             <aside class="md:w-1/4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 h-fit sticky top-8">
                 <div class="flex justify-between items-center mb-4">
@@ -158,7 +155,6 @@
                     </button>
                 </div>
             </aside>
-
             <!-- AI Tools Grid and Add Tool button -->
             <section class="md:w-3/4">
                 <div class="flex justify-end mb-4">
@@ -173,14 +169,12 @@
             </section>
         </div>
     </main>
-
     <!-- Footer Section -->
     <footer class="bg-gradient-to-r from-indigo-700 to-sky-600 text-white rounded-t-3xl shadow-inner mx-4 mb-4 md:mx-10 md:mb-6">
         <div class="container mx-auto px-6 py-8 text-center">
             <p>&copy; 2024 YourCompany. Mọi quyền được bảo lưu.</p>
         </div>
     </footer>
-    
     <!-- Custom Modal for various inputs and messages -->
     <div id="modal-container" class="modal-bg fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg">
@@ -195,7 +189,6 @@
             </div>
         </div>
     </div>
-
     <!-- Notification element -->
     <div id="toast-notification" class="toast-notification">
         <span id="notification-message"></span>
@@ -224,10 +217,10 @@
 
         // Dữ liệu mặc định 20 danh mục
         const defaultCategories = [
-            "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Viết mã", 
-            "Marketing & Content", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu", 
-            "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập", 
-            "Tài chính", "Chăm sóc khách hàng", "Y tế & Sức khỏe", "Bán hàng", 
+            "Chatbot & Trợ lý AI", "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Viết mã",
+            "Marketing & Content", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu",
+            "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập",
+            "Tài chính", "Chăm sóc khách hàng", "Y tế & Sức khỏe", "Bán hàng",
             "An ninh mạng", "Gaming & Giải trí"
         ];
         
@@ -240,9 +233,10 @@
             let description = `Mô tả chi tiết cho Công cụ AI ${i} thuộc nhóm ${category}.`;
             let instructions = `Để bắt đầu, bạn cần truy cập trang web chính thức của công cụ, đăng ký tài khoản và làm theo hướng dẫn trên màn hình.`;
             let url = `https://example.com/tool-${i}`;
-            
+
             // Cập nhật mô tả và icon cho các danh mục cụ thể
-            if (category === "Tạo ảnh") { icon = '🎨'; description = `Công cụ AI chuyên tạo hình ảnh nghệ thuật và chân thực từ các mô tả văn bản chi tiết.`; } 
+            if (category === "Chatbot & Trợ lý AI") { icon = '🗣️'; description = `Công cụ chatbot và trợ lý AI giúp tự động hóa giao tiếp, trả lời câu hỏi và thực hiện các tác vụ hàng ngày.`; }
+            else if (category === "Tạo ảnh") { icon = '🎨'; description = `Công cụ AI chuyên tạo hình ảnh nghệ thuật và chân thực từ các mô tả văn bản chi tiết.`; }
             else if (category === "Tạo văn bản") { icon = '💬'; description = `Một mô hình ngôn ngữ lớn có khả năng tạo ra các văn bản sáng tạo, trả lời câu hỏi và thực hiện các tác vụ viết lách.`; }
             else if (category === "Chỉnh sửa video") { icon = '🎬'; description = `Công cụ AI giúp tự động hóa các tác vụ chỉnh sửa video như cắt ghép, thêm hiệu ứng, và tạo phụ đề.`; }
             else if (category === "Tổng hợp âm thanh") { icon = '🎵'; description = `Tạo ra các bản nhạc, bài hát hoặc giọng nói tổng hợp với chất lượng cao từ văn bản.`; }
@@ -262,7 +256,7 @@
             else if (category === "Bán hàng") { icon = '💼'; description = `Tối ưu hóa quy trình bán hàng, tạo kịch bản, và dự đoán doanh số.`; }
             else if (category === "An ninh mạng") { icon = '🔒'; description = `Phát hiện các mối đe dọa, phân tích rủi ro và tăng cường bảo mật cho hệ thống mạng.`; }
             else if (category === "Gaming & Giải trí") { icon = '🎮'; description = `Tạo ra các nhân vật, kịch bản, và nội dung trò chơi, hoặc đề xuất các nội dung giải trí phù hợp.`; }
-            
+
             defaultToolsData.push({
                 id: i,
                 name: `Công cụ AI ${i} (${category})`,
@@ -273,7 +267,103 @@
                 url: url
             });
         }
-        
+
+        // Cập nhật các công cụ cụ thể theo yêu cầu
+        const updateTools = () => {
+            const toolUpdates = [
+                {
+                    id: 1,
+                    name: "ChatGPT",
+                    description: "Chatbot AI của OpenAI, hỗ trợ trả lời câu hỏi, viết nội dung, lập trình, và nhiều nhiệm vụ khác.",
+                    instructions: "Truy cập website, đăng ký/đăng nhập. Nhập câu hỏi hoặc yêu cầu (prompt) vào ô trò chuyện. Tùy chỉnh giọng điệu (thân thiện, chuyên nghiệp) nếu cần. Phù hợp: Hỏi đáp, viết bài, hỗ trợ học tập. Lưu ý: Phiên bản miễn phí có giới hạn, nâng cấp ChatGPT Plus để có thêm tính năng.",
+                    url: "https://chatgpt.com/",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "🤖"
+                },
+                {
+                    id: 22,
+                    name: "Claude",
+                    description: "Chatbot AI của Anthropic, mạnh về xử lý văn bản dài, phân tích, và trả lời an toàn, đạo đức.",
+                    instructions: "Đăng ký tài khoản trên website. Nhập câu hỏi hoặc tài liệu cần phân tích. Chọn chế độ trả lời (ngắn gọn hoặc chi tiết). Phù hợp: Phân tích tài liệu, viết báo cáo, tư vấn. Lưu ý: Không mạnh về lập trình như ChatGPT.",
+                    url: "https://claude.ai/new",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "🗣️"
+                },
+                {
+                    id: 43,
+                    name: "Gemini",
+                    description: "AI của Google, hỗ trợ tìm kiếm, trả lời câu hỏi, tích hợp với hệ sinh thái Google.",
+                    instructions: "Truy cập, đăng nhập bằng tài khoản Google. Nhập câu hỏi hoặc yêu cầu (text, hình ảnh). Tích hợp với Google Docs, Gmail để tự động hóa. Phù hợp: Tìm kiếm thông tin, hỗ trợ công việc văn phòng. Lưu ý: Cần kết nối internet ổn định.",
+                    url: "https://gemini.google.com/app",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "✨"
+                },
+                {
+                    id: 64,
+                    name: "Character.AI",
+                    description: "Tạo và trò chuyện với các nhân vật AI tùy chỉnh, từ nhân vật hư cấu đến người nổi tiếng.",
+                    instructions: "Đăng ký, chọn hoặc tạo nhân vật AI. Nhập câu hỏi hoặc bắt đầu trò chuyện theo kịch bản. Phù hợp: Giáo dục sáng tạo, kể chuyện, giải trí. Lưu ý: Thích hợp cho học sinh hoặc sáng tạo nội dung.",
+                    url: "https://character.ai/",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "🎭"
+                },
+                {
+                    id: 85,
+                    name: "Minimax AI",
+                    description: "Chatbot AI với khả năng xử lý ngôn ngữ tự nhiên. Có thể được sử dụng trong các cuộc trò chuyện hoặc hỗ trợ công việc.",
+                    instructions: "Tìm kiếm trang chính thức của Minimax AI (khuyến nghị tra Google hoặc Futurepedia). Đăng ký tài khoản và nhập prompt để sử dụng. Lưu ý: Cần xác minh nguồn gốc và thông tin chính thức của công cụ.",
+                    url: "Không tìm thấy link chính thức",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "🤖"
+                },
+                {
+                    id: 106,
+                    name: "Grok",
+                    description: "AI của xAI, hỗ trợ trả lời câu hỏi, phân tích dữ liệu và tìm kiếm thông tin thời gian thực. Được tích hợp sâu vào nền tảng X.",
+                    instructions: "Truy cập grok.com hoặc ứng dụng X, sau đó đăng nhập. Nhập câu hỏi hoặc yêu cầu. Bạn cũng có thể dùng chế độ giọng nói trên ứng dụng di động. Lưu ý: Grok có phiên bản miễn phí với giới hạn, và phiên bản SuperGrok cung cấp quota cao hơn.",
+                    url: "https://grok.com/",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "🧠"
+                },
+                {
+                    id: 127,
+                    name: "DeepSeek",
+                    description: "Chatbot AI mạnh mẽ do một công ty Trung Quốc phát triển. Nó xuất sắc trong các tác vụ phức tạp như lập luận, lập trình, toán học, và xử lý tài liệu dài.",
+                    instructions: "Truy cập trang web chat.deepseek.com hoặc tải ứng dụng di động DeepSeek. Đăng ký tài khoản (qua Gmail, Google, Yahoo). Nhập prompt của bạn để nhận câu trả lời, giải toán, viết code, v.v.",
+                    url: "https://chat.deepseek.com/",
+                    category: "Viết mã",
+                    icon: "💻"
+                },
+                {
+                    id: 148,
+                    name: "Google AI Studio",
+                    description: "Môi trường phát triển (IDE) dựa trên web để thử nghiệm và xây dựng ứng dụng với các mô hình AI tạo sinh của Google như Gemini, Gemma, Veo.",
+                    instructions: "Truy cập aistudio.google.com và đăng nhập bằng tài khoản Google. Khám phá thư viện prompt có sẵn hoặc tự xây dựng mô hình của riêng bạn. Sử dụng tính năng 'Get Code' để xuất mã.",
+                    url: "https://aistudio.google.com/",
+                    category: "Viết mã",
+                    icon: "🛠️"
+                },
+                {
+                    id: 169,
+                    name: "ChatbotX",
+                    description: "Nền tảng AI dành cho người Việt, tích hợp GPT-4o, Claude, Gemini… hỗ trợ tạo chatbot, tìm kiếm thông tin, soạn nội dung, và nhiều trợ lý chuyên biệt.",
+                    instructions: "Đăng ký và đăng nhập tại app.chatbotx.vn. Chọn công cụ bạn muốn dùng: Chat Pro, AI Photo, AI Workflow, hoặc một trong các trợ lý chuyên biệt. Nhập yêu cầu (prompt) và chờ nhận kết quả.",
+                    url: "https://app.chatbotx.vn/",
+                    category: "Chatbot & Trợ lý AI",
+                    icon: "💬"
+                }
+            ];
+
+            toolUpdates.forEach(updatedTool => {
+                const index = defaultToolsData.findIndex(tool => tool.id === updatedTool.id);
+                if (index !== -1) {
+                    defaultToolsData[index] = { ...defaultToolsData[index], ...updatedTool };
+                }
+            });
+        };
+
+        updateTools();
+
         // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định
         let categories = loadFromLocalStorage('categories') || defaultCategories;
         let toolsData = loadFromLocalStorage('toolsData') || defaultToolsData;
@@ -304,7 +394,7 @@
             'bg-gradient-to-r from-fuchsia-400 to-pink-500',
             'bg-gradient-to-r from-lime-400 to-yellow-500'
         ];
-        
+
         // Dải màu gradient nhẹ nhàng cho các thẻ công cụ
         const toolCardGradients = [
             'gradient-teal', 'gradient-indigo', 'gradient-purple', 'gradient-green',
@@ -330,12 +420,12 @@
         const modalCancelBtn = document.getElementById('modal-cancel-btn');
         const toastNotification = document.getElementById('toast-notification');
         const notificationMessage = document.getElementById('notification-message');
-        
+
         let isAdmin = false;
         let currentFilteredTools = [...toolsData];
         let activeCategory = 'all';
         let modalActionType = '';
-        
+
         const showNotification = (message, isError = false) => {
             notificationMessage.textContent = message;
             if (isError) {
@@ -359,16 +449,18 @@
             return '';
         };
 
+        // Hàm render các thẻ công cụ ra màn hình
         const renderTools = (tools) => {
             toolsContainer.innerHTML = tools.map(tool => {
                 const cardGradientClass = getToolCardGradientClass(tool.category);
 
                 if (isAdmin) {
+                    // Giao diện thẻ công cụ cho chế độ quản trị (có nút chỉnh sửa)
                     return `
                         <div class="ai-tool-card bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between ${cardGradientClass}" data-id="${tool.id}">
                             <div>
                                 <div class="flex items-center mb-4">
-                                    <span class="text-3xl mr-4">${tool.icon}</span>
+                                    <span class="text-3xl mr-4 tool-icon-display">${tool.icon}</span>
                                     <h3 class="text-xl font-bold text-slate-900 tool-name-display">${tool.name}</h3>
                                     <input type="text" value="${tool.name}" class="text-xl font-bold text-slate-900 editable-field hidden" data-field="name">
                                 </div>
@@ -378,10 +470,10 @@
                                 <p class="text-slate-500 text-sm italic mb-4 tool-instructions-display">
                                     **Hướng dẫn sử dụng:** ${tool.instructions}
                                 </p>
-                                <textarea class="text-slate-500 text-sm italic mb-4 editable-field hidden" data-field="instructions">${tool.instructions.replace('**Hướng dẫn sử dụng:** ', '')}</textarea>
+                                <textarea class="text-slate-500 text-sm italic mb-4 editable-field hidden" data-field="instructions">${tool.instructions}</textarea>
                                 
                                 <input type="text" value="${tool.url}" class="text-slate-500 text-sm italic mb-4 editable-field hidden" data-field="url">
-                                <span class="inline-block mt-2 text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1 rounded-full">${tool.category}</span>
+                                <span class="inline-block mt-2 text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1 rounded-full tool-category-display">${tool.category}</span>
                             </div>
                             <div class="mt-6 flex space-x-2">
                                 <button class="w-full text-center bg-sky-600 text-white font-bold py-3 px-6 rounded-full hover:bg-sky-700 transition-colors duration-200 edit-btn">
@@ -390,10 +482,14 @@
                                 <button class="w-full text-center bg-emerald-500 text-white font-bold py-3 px-6 rounded-full hover:bg-emerald-600 transition-colors duration-200 save-btn hidden">
                                     Lưu
                                 </button>
+                                <button class="w-full text-center bg-rose-600 text-white font-bold py-3 px-6 rounded-full hover:bg-rose-700 transition-colors duration-200 delete-btn">
+                                    Xóa
+                                </button>
                             </div>
                         </div>
                     `;
                 } else {
+                    // Giao diện thẻ công cụ cho chế độ người dùng bình thường
                     return `
                         <div class="ai-tool-card bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-between ${cardGradientClass}">
                             <div>
@@ -416,14 +512,15 @@
             }).join('');
         };
 
+        // Hàm tạo các nút danh mục
         const createFilterButtons = () => {
             const uniqueCategories = [...new Set(categories)];
-            
+
             let allButtonHtml = `
                 <button class="filter-btn block w-full text-left py-2 px-4 rounded-lg font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors duration-200 ${activeCategory === 'all' ? 'active' : ''}" data-category="all">
                     Tất cả
                 </button>`;
-            
+
             const categoryButtonsHtml = uniqueCategories.map((category, index) => {
                 const gradientClass = categoryGradients[index % categoryGradients.length];
                 return `
@@ -434,7 +531,7 @@
             }).join('');
 
             filterContainer.innerHTML = allButtonHtml + categoryButtonsHtml;
-            
+
             const filterButtons = document.querySelectorAll('.filter-btn');
             filterButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -445,10 +542,10 @@
                     const filteredTools = activeCategory === 'all'
                         ? toolsData
                         : toolsData.filter(tool => tool.category === activeCategory);
-                    
+
                     currentFilteredTools = filteredTools;
                     renderTools(currentFilteredTools);
-                    
+
                     filterButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
 
@@ -467,14 +564,14 @@
 
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
-            const filteredTools = toolsData.filter(tool => 
+            const filteredTools = toolsData.filter(tool =>
                 tool.name.toLowerCase().includes(searchTerm) ||
                 tool.description.toLowerCase().includes(searchTerm)
             );
-            
+
             currentFilteredTools = filteredTools;
             renderTools(currentFilteredTools);
-            
+
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             addToolBtn.classList.add('hidden');
             renameCategoryBtn.classList.add('hidden');
@@ -550,6 +647,7 @@
         modalConfirmBtn.addEventListener('click', () => {
             if (modalActionType === 'admin-login') {
                 const password = document.getElementById('password-input').value;
+                // Mật khẩu quản trị
                 if (password === 'hakadmin') {
                     isAdmin = true;
                     adminToggleButton.textContent = 'Thoát Quản trị';
@@ -561,85 +659,86 @@
                         renameCategoryBtn.classList.remove('hidden');
                         deleteCategoryBtn.classList.remove('hidden');
                     }
-                    modalContainer.classList.add('hidden');
                     renderTools(currentFilteredTools);
+                    modalContainer.classList.add('hidden');
+                    showNotification('Đã đăng nhập chế độ quản trị.');
                 } else {
-                    modalMessage.textContent = 'Mật khẩu không đúng, vui lòng thử lại.';
+                    modalMessage.textContent = 'Mật khẩu không chính xác.';
                     modalMessage.classList.remove('hidden');
-                    document.getElementById('password-input').value = '';
                 }
             } else if (modalActionType === 'add-category') {
-                const newCategoryName = document.getElementById('category-name-input').value;
+                const newCategoryName = document.getElementById('category-name-input').value.trim();
                 if (newCategoryName && !categories.includes(newCategoryName)) {
                     categories.push(newCategoryName);
                     saveToLocalStorage('categories', categories);
                     createFilterButtons();
                     modalContainer.classList.add('hidden');
-                    showNotification(`Đã thêm danh mục "${newCategoryName}" thành công!`);
+                    showNotification(`Đã thêm danh mục "${newCategoryName}".`);
                 } else {
                     modalMessage.textContent = 'Tên danh mục không hợp lệ hoặc đã tồn tại.';
                     modalMessage.classList.remove('hidden');
                 }
             } else if (modalActionType === 'rename-category') {
-                const newName = document.getElementById('new-category-name-input').value;
+                const newName = document.getElementById('new-category-name-input').value.trim();
                 if (newName && !categories.includes(newName)) {
+                    // Cập nhật tên danh mục trong mảng categories
                     const oldName = activeCategory;
                     const index = categories.indexOf(oldName);
-                    if (index !== -1) {
+                    if (index > -1) {
                         categories[index] = newName;
-                        toolsData.forEach(tool => {
-                            if (tool.category === oldName) {
-                                tool.category = newName;
-                            }
-                        });
-                        activeCategory = newName;
-                        saveToLocalStorage('categories', categories);
-                        saveToLocalStorage('toolsData', toolsData);
-                        createFilterButtons();
-                        renderTools(toolsData.filter(tool => tool.category === newName));
-                        modalContainer.classList.add('hidden');
-                        showNotification(`Đã đổi tên danh mục thành "${newName}" thành công!`);
                     }
+
+                    // Cập nhật tên danh mục cho tất cả các công cụ liên quan
+                    toolsData.forEach(tool => {
+                        if (tool.category === oldName) {
+                            tool.category = newName;
+                        }
+                    });
+
+                    saveToLocalStorage('categories', categories);
+                    saveToLocalStorage('toolsData', toolsData);
+                    
+                    activeCategory = newName; // Cập nhật danh mục đang hoạt động
+                    createFilterButtons();
+                    renderTools(toolsData.filter(tool => tool.category === newName)); // Render lại công cụ với tên mới
+                    
+                    modalContainer.classList.add('hidden');
+                    showNotification(`Đã đổi tên danh mục thành "${newName}".`);
                 } else {
                     modalMessage.textContent = 'Tên danh mục không hợp lệ hoặc đã tồn tại.';
                     modalMessage.classList.remove('hidden');
                 }
             } else if (modalActionType === 'delete-category') {
-                const categoryToDelete = activeCategory;
-                if (categoryToDelete !== 'all') {
-                    const newCategories = categories.filter(cat => cat !== categoryToDelete);
-                    categories = newCategories;
-                    const newToolsData = toolsData.filter(tool => tool.category !== categoryToDelete);
-                    toolsData.length = 0;
-                    toolsData.push(...newToolsData);
+                if (activeCategory !== 'all') {
+                    // Lọc ra các danh mục và công cụ cần giữ lại
+                    categories = categories.filter(cat => cat !== activeCategory);
+                    toolsData = toolsData.filter(tool => tool.category !== activeCategory);
                     
                     saveToLocalStorage('categories', categories);
                     saveToLocalStorage('toolsData', toolsData);
-                    
-                    activeCategory = 'all';
+
+                    activeCategory = 'all'; // Chuyển về danh mục "Tất cả"
                     createFilterButtons();
-                    renderTools(toolsData);
+                    renderTools(toolsData); // Render lại công cụ
+                    
                     modalContainer.classList.add('hidden');
-                    showNotification(`Đã xóa danh mục "${categoryToDelete}" và các công cụ liên quan.`);
-                } else {
-                    modalContainer.classList.add('hidden');
-                    showNotification('Không thể xóa danh mục "Tất cả".', true);
+                    showNotification(`Đã xóa danh mục và các công cụ liên quan.`);
                 }
             } else if (modalActionType === 'add-tool') {
-                const name = document.getElementById('tool-name-input').value;
-                const description = document.getElementById('tool-description-input').value;
-                const instructions = document.getElementById('tool-instructions-input').value;
-                const url = document.getElementById('tool-url-input').value;
-                const icon = document.getElementById('tool-icon-input').value || '🤖';
+                const name = document.getElementById('tool-name-input').value.trim();
+                const icon = document.getElementById('tool-icon-input').value.trim() || '🤖';
+                const description = document.getElementById('tool-description-input').value.trim();
+                const instructions = document.getElementById('tool-instructions-input').value.trim();
+                const url = document.getElementById('tool-url-input').value.trim();
 
                 if (name && description && instructions && url) {
                     const newTool = {
                         id: nextToolId++,
                         name,
+                        icon,
                         description,
                         instructions,
                         url,
-                        icon,
                         category: activeCategory
                     };
                     toolsData.push(newTool);
@@ -647,68 +746,105 @@
                     currentFilteredTools = toolsData.filter(tool => tool.category === activeCategory);
                     renderTools(currentFilteredTools);
                     modalContainer.classList.add('hidden');
-                    showNotification('Đã thêm công cụ mới thành công!');
+                    showNotification(`Đã thêm công cụ "${name}".`);
                 } else {
-                    modalMessage.textContent = 'Vui lòng điền đầy đủ các trường thông tin.';
+                    modalMessage.textContent = 'Vui lòng điền đầy đủ các trường.';
                     modalMessage.classList.remove('hidden');
                 }
             }
         });
 
+        // Event listener cho nút hủy trong modal
         modalCancelBtn.addEventListener('click', () => {
             modalContainer.classList.add('hidden');
+            modalMessage.classList.add('hidden');
         });
 
+        // Event listener để chỉnh sửa/lưu công cụ trong chế độ quản trị
         toolsContainer.addEventListener('click', (e) => {
-            const card = e.target.closest('.ai-tool-card');
-            if (!card) return;
-            const toolId = parseInt(card.dataset.id);
-            const toolIndex = toolsData.findIndex(tool => tool.id === toolId);
+            // Find the closest parent tool card
+            const toolCard = e.target.closest('.ai-tool-card');
+            if (!toolCard) return;
 
-            if (e.target.classList.contains('edit-btn')) {
-                const fields = card.querySelectorAll('.editable-field');
-                const displays = card.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display, .tool-url-display');
-                
-                fields.forEach(field => field.classList.remove('hidden'));
-                displays.forEach(display => display.classList.add('hidden'));
-                
-                card.querySelector('.edit-btn').classList.add('hidden');
-                card.querySelector('.save-btn').classList.remove('hidden');
-            }
+            // Find the specific buttons within this card
+            const editBtn = e.target.closest('.edit-btn');
+            const saveBtn = e.target.closest('.save-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
 
-            if (e.target.classList.contains('save-btn')) {
+            const toolId = parseInt(toolCard.dataset.id);
+            const tool = toolsData.find(t => t.id === toolId);
+            if (!tool) return;
+
+            if (editBtn) {
+                // Chuyển sang chế độ chỉnh sửa
+                toolCard.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display, .tool-category-display, .tool-icon-display').forEach(el => el.classList.add('hidden'));
+                toolCard.querySelectorAll('.editable-field').forEach(el => el.classList.remove('hidden'));
+                editBtn.classList.add('hidden');
+                // The save and delete buttons are now guaranteed to exist within the card
+                toolCard.querySelector('.save-btn').classList.remove('hidden');
+                toolCard.querySelector('.delete-btn').classList.add('hidden');
+            } else if (saveBtn) {
+                // Lưu các thay đổi
+                const nameInput = toolCard.querySelector('[data-field="name"]').value;
+                const descriptionInput = toolCard.querySelector('[data-field="description"]').value;
+                const instructionsInput = toolCard.querySelector('[data-field="instructions"]').value;
+                const urlInput = toolCard.querySelector('[data-field="url"]').value;
+                
+                tool.name = nameInput.trim();
+                tool.description = descriptionInput.trim();
+                tool.instructions = instructionsInput.trim();
+                tool.url = urlInput.trim();
+
+                // Cập nhật lại tool trong mảng chính
+                const toolIndex = toolsData.findIndex(t => t.id === toolId);
                 if (toolIndex !== -1) {
-                    const name = card.querySelector('[data-field="name"]').value;
-                    const description = card.querySelector('[data-field="description"]').value;
-                    const instructions = card.querySelector('[data-field="instructions"]').value;
-                    const url = card.querySelector('[data-field="url"]').value;
-
-                    toolsData[toolIndex].name = name;
-                    toolsData[toolIndex].description = description;
-                    toolsData[toolIndex].instructions = instructions;
-                    toolsData[toolIndex].url = url;
-
-                    card.querySelector('.tool-name-display').textContent = name;
-                    card.querySelector('.tool-description-display').textContent = description;
-                    card.querySelector('.tool-instructions-display').innerHTML = `**Hướng dẫn sử dụng:** ${instructions}`;
-                    
-                    const fields = card.querySelectorAll('.editable-field');
-                    const displays = card.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display');
-                    
-                    fields.forEach(field => field.classList.add('hidden'));
-                    displays.forEach(display => display.classList.remove('hidden'));
-
-                    card.querySelector('.edit-btn').classList.remove('hidden');
-                    card.querySelector('.save-btn').classList.add('hidden');
-
-                    saveToLocalStorage('toolsData', toolsData);
-                    showNotification('Đã lưu thành công!');
+                    toolsData[toolIndex] = tool;
                 }
+
+                saveToLocalStorage('toolsData', toolsData);
+                
+                // Trở về chế độ hiển thị
+                toolCard.querySelectorAll('.tool-name-display, .tool-description-display, .tool-instructions-display, .tool-category-display, .tool-icon-display').forEach(el => el.classList.remove('hidden'));
+                toolCard.querySelectorAll('.editable-field').forEach(el => el.classList.add('hidden'));
+                // The edit and delete buttons are now guaranteed to exist within the card
+                toolCard.querySelector('.edit-btn').classList.remove('hidden');
+                toolCard.querySelector('.save-btn').classList.add('hidden');
+                if (toolCard.querySelector('.delete-btn')) { // Check if delete button exists before showing
+                    toolCard.querySelector('.delete-btn').classList.remove('hidden');
+                }
+                
+                renderTools(currentFilteredTools); // Render lại để cập nhật hiển thị
+                showNotification(`Đã lưu thay đổi cho công cụ "${tool.name}".`);
+
+            } else if (deleteBtn) {
+                // Xóa công cụ
+                modalActionType = 'delete-tool';
+                modalContainer.classList.remove('hidden');
+                modalTitle.textContent = 'Xác nhận xóa công cụ';
+                modalContent.innerHTML = `<p class="text-sm text-rose-600">Bạn có chắc chắn muốn xóa công cụ "**${tool.name}**" không? Thao tác này không thể hoàn tác.</p>`;
+                modalMessage.classList.add('hidden');
+
+                // Thêm một event listener tạm thời để xử lý xóa khi xác nhận
+                const confirmDelete = () => {
+                    toolsData = toolsData.filter(t => t.id !== toolId);
+                    saveToLocalStorage('toolsData', toolsData);
+                    currentFilteredTools = toolsData.filter(tool => tool.category === activeCategory);
+                    renderTools(currentFilteredTools);
+                    modalContainer.classList.add('hidden');
+                    showNotification(`Đã xóa công cụ "${tool.name}".`);
+                    // Xóa event listener này để tránh lỗi
+                    modalConfirmBtn.removeEventListener('click', confirmDelete);
+                };
+                modalConfirmBtn.addEventListener('click', confirmDelete);
             }
         });
 
-        createFilterButtons();
-        renderTools(toolsData);
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', () => {
+            createFilterButtons();
+            renderTools(toolsData);
+        });
+
     </script>
 </body>
 </html>
