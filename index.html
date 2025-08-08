@@ -221,7 +221,7 @@
         // Dữ liệu mặc định 20 danh mục
         const defaultCategories = [
             "Chatbot & Trợ lý AI", "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Thuyết trình",
-            "Marketing & Content", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu",
+            "Hỗ trợ giáo viên", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu",
             "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập",
             "Tài chính", "Chăm sóc khách hàng", "Y tế & Sức khỏe", "Bán hàng",
             "An ninh mạng", "Gaming & Giải trí"
@@ -1018,8 +1018,117 @@
                     category: "Tạo ảnh",
                     icon: "🖼️",
                     free: "Có bản miễn phí (giới hạn số ảnh)"
+                },
+                {
+                    id: 257,
+                    name: "Conker",
+                    description: "Tạo bài kiểm tra, câu hỏi trắc nghiệm tự động.",
+                    instructions: "Đăng ký, nhập chủ đề bài kiểm tra, AI tạo câu hỏi, tùy chỉnh và xuất.",
+                    url: "https://www.conker.ai/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "📝",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 258,
+                    name: "gotFeedback",
+                    description: "Hỗ trợ chấm bài và phản hồi tự động cho học sinh.",
+                    instructions: "Đăng ký, tải bài làm của học sinh, AI chấm điểm và gợi ý phản hồi.",
+                    url: "https://feedback.gotlearning.com/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "📊",
+                    free: "Không miễn phí"
+                },
+                {
+                    id: 259,
+                    name: "Khanmigo",
+                    description: "Trợ lý AI của Khan Academy, hỗ trợ giảng dạy và cá nhân hóa học tập.",
+                    instructions: "Đăng ký, nhập nội dung bài học, AI gợi ý bài tập, tài liệu phù hợp.",
+                    url: "https://www.khanmigo.ai/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "🎓",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 260,
+                    name: "Diffit",
+                    description: "Tạo tài liệu học tập và bài tập từ văn bản.",
+                    instructions: "Nhập văn bản hoặc chủ đề, AI tạo bài tập, câu hỏi, tài liệu.",
+                    url: "https://web.diffit.me/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "📄",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 261,
+                    name: "Eduaide.Ai",
+                    description: "Hỗ trợ giáo viên lập kế hoạch bài giảng và tài liệu.",
+                    instructions: "Đăng ký, nhập mục tiêu bài học, AI tạo tài liệu, bài tập, slide.",
+                    url: "https://www.eduaide.ai/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "📚",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 262,
+                    name: "Twee",
+                    description: "Tạo bài tập và hoạt động giảng dạy bằng AI.",
+                    instructions: "Đăng ký, nhập chủ đề hoặc văn bản, AI tạo câu hỏi, bài tập, trò chơi học tập.",
+                    url: "https://twee.com/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "🎯",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 263,
+                    name: "Microsoft Reading Coach",
+                    description: "Hỗ trợ học sinh cải thiện kỹ năng đọc với AI.",
+                    instructions: "Đăng ký, tải bài đọc lên, AI hướng dẫn học sinh đọc và phản hồi.",
+                    url: "https://coach.microsoft.com/en-US",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "📖",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 264,
+                    name: "MagicSchool AI",
+                    description: "Tạo tài liệu, bài tập, và kế hoạch bài giảng cho giáo viên.",
+                    instructions: "Đăng ký, nhập mục tiêu giảng dạy, AI tạo tài liệu, bài tập, quiz.",
+                    url: "https://www.magicschool.ai/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "🏫",
+                    free: "Có bản miễn phí cho giáo viên"
+                },
+                {
+                    id: 265,
+                    name: "Animated Drawings",
+                    description: "Chuyển bản vẽ thành hoạt hình, hỗ trợ giảng dạy sáng tạo.",
+                    instructions: "Tải bản vẽ lên, AI tạo hoạt hình, tùy chỉnh chuyển động, xuất video.",
+                    url: "https://sketch.metademolab.com/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "🎨",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 266,
+                    name: "Curipod",
+                    description: "Tạo bài giảng tương tác với câu hỏi và hoạt động.",
+                    instructions: "Đăng ký, nhập chủ đề bài giảng, AI tạo slide, câu hỏi tương tác.",
+                    url: "https://curipod.com/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "💡",
+                    free: "Có bản miễn phí"
+                },
+                {
+                    id: 267,
+                    name: "TeachMateAi",
+                    description: "Hỗ trợ giáo viên tạo tài liệu, bài tập, và phản hồi.",
+                    instructions: "Đăng ký, nhập nội dung hoặc mục tiêu, AI tạo tài liệu, bài tập, phản hồi.",
+                    url: "https://teachmateai.com/",
+                    category: "Hỗ trợ giáo viên",
+                    icon: "🖋️",
+                    free: "Có bản miễn phí"
                 }
-
             ];
         
         // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định ban đầu
