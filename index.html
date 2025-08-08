@@ -153,6 +153,9 @@
                     <button id="delete-category-btn" class="w-full p-3 rounded-lg bg-rose-600 text-white font-bold hover:bg-rose-700 transition-colors duration-300 hidden">
                         Xoá danh mục
                     </button>
+                    <button id="reset-data-btn" class="w-full p-3 rounded-lg bg-slate-400 text-white font-bold hover:bg-slate-500 transition-colors duration-300">
+                        Reset Dữ liệu
+                    </button>
                 </div>
             </aside>
             <!-- AI Tools Grid and Add Tool button -->
@@ -260,7 +263,7 @@
                     instructions: "Truy cập qua ChatGPT Plus hoặc API OpenAI. Nhập mô tả chi tiết, chọn hình phù hợp từ các kết quả.",
                     url: "https://openai.com/vi-VN/index/dall-e/",
                     category: "Tạo ảnh",
-                    icon: "�️"
+                    icon: "🖌️"
                 },
                 {
                     id: 5,
@@ -508,7 +511,7 @@
                 {
                     id: 170,
                     name: "Darktrace",
-                    description: "Một công cụ an ninh mạng hàng đầu, sử dụng AI để phát hiện và phản ứng tự động trước các mối đe dọa mạng, bao gồm cả các cuộc tấn công chưa từng được biết đến.",
+                description: "Một công cụ an ninh mạng hàng đầu, sử dụng AI để phát hiện và phản ứng tự động trước các mối đe dọa mạng, bao gồm cả các cuộc tấn công chưa từng được biết đến.",
                     instructions: "Truy cập trang web darktrace.com và liên hệ để được demo. Hệ thống Darktrace sẽ tự động học hành vi 'bình thường' của mạng nội bộ và sau đó có thể phát hiện các hành vi bất thường, từ đó đưa ra cảnh báo và hành động tự động. Lưu ý: Đây là giải pháp an ninh mạng cho doanh nghiệp.",
                     url: "https://www.darktrace.com/",
                     category: "An ninh mạng",
@@ -581,6 +584,7 @@
         const addCategoryBtn = document.getElementById('add-category-btn');
         const renameCategoryBtn = document.getElementById('rename-category-btn');
         const deleteCategoryBtn = document.getElementById('delete-category-btn');
+        const resetDataBtn = document.getElementById('reset-data-btn');
         const addToolBtn = document.getElementById('add-tool-btn');
         const modalContainer = document.getElementById('modal-container');
         const modalTitle = document.getElementById('modal-title');
@@ -769,6 +773,15 @@
             }
         });
 
+        // Nút reset dữ liệu
+        resetDataBtn.addEventListener('click', () => {
+            modalActionType = 'reset-data';
+            modalContainer.classList.remove('hidden');
+            modalTitle.textContent = 'Xác nhận khôi phục dữ liệu';
+            modalContent.innerHTML = `<p class="text-sm text-rose-600">Bạn có chắc chắn muốn khôi phục lại dữ liệu mặc định ban đầu không? Mọi thay đổi của bạn sẽ bị mất.</p>`;
+            modalMessage.classList.add('hidden');
+        });
+
         addCategoryBtn.addEventListener('click', () => {
             modalActionType = 'add-category';
             modalContainer.classList.remove('hidden');
@@ -821,8 +834,8 @@
                 if (password === 'hakadmin') {
                     isAdmin = true;
                     adminToggleButton.textContent = 'Thoát Quản trị';
-                    adminToggleButton.classList.remove('bg-rose-600', 'hover:bg-rose-700');
-                    adminToggleButton.classList.add('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
+                    adminToggleButton.classList.remove('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
+                    adminToggleButton.classList.add('bg-rose-600', 'hover:bg-rose-700', 'text-white');
                     adminCategoryActions.classList.remove('hidden');
                     if (activeCategory !== 'all') {
                         addToolBtn.classList.remove('hidden');
@@ -836,6 +849,11 @@
                     modalMessage.textContent = 'Mật khẩu không chính xác.';
                     modalMessage.classList.remove('hidden');
                 }
+            } else if (modalActionType === 'reset-data') {
+                localStorage.removeItem('categories');
+                localStorage.removeItem('toolsData');
+                window.location.reload();
+                showNotification('Đã khôi phục dữ liệu mặc định.');
             } else if (modalActionType === 'add-category') {
                 const newCategoryName = document.getElementById('category-name-input').value.trim();
                 if (newCategoryName && !categories.includes(newCategoryName)) {
@@ -850,7 +868,7 @@
                 }
             } else if (modalActionType === 'rename-category') {
                 const newName = document.getElementById('new-category-name-input').value.trim();
-                if (newName && !categories.includes(newName)) {
+                if (newName && newName !== activeCategory && !categories.includes(newName)) {
                     // Cập nhật tên danh mục trong mảng categories
                     const oldName = activeCategory;
                     const index = categories.indexOf(oldName);
@@ -859,12 +877,13 @@
                     }
 
                     // Cập nhật tên danh mục cho tất cả các công cụ liên quan
-                    toolsData.forEach(tool => {
+                    toolsData = toolsData.map(tool => {
                         if (tool.category === oldName) {
-                            tool.category = newName;
+                            return { ...tool, category: newName };
                         }
+                        return tool;
                     });
-
+                    
                     saveToLocalStorage('categories', categories);
                     saveToLocalStorage('toolsData', toolsData);
                     
@@ -1018,4 +1037,3 @@
     </script>
 </body>
 </html>
-�
