@@ -221,7 +221,7 @@
         // Dữ liệu mặc định 20 danh mục
         const defaultCategories = [
             "Chatbot & Trợ lý AI", "Tạo ảnh", "Tạo văn bản", "Chỉnh sửa video", "Tổng hợp âm thanh", "Thuyết trình",
-            "Hỗ trợ giáo viên", "Thiết kế & UX", "Năng suất & Tổ chức", "Phân tích dữ liệu",
+            "Hỗ trợ giáo viên", "Kiểm tra nội dung từ AI", "Năng suất & Tổ chức", "Phân tích dữ liệu",
             "E-commerce", "Sáng tạo nội dung", "Dịch thuật", "Giao tiếp", "Giáo dục & Học tập",
             "Tài chính", "Chăm sóc khách hàng", "Y tế & Sức khỏe", "Bán hàng",
             "An ninh mạng", "Gaming & Giải trí"
@@ -1128,7 +1128,128 @@
                     category: "Hỗ trợ giáo viên",
                     icon: "🖋️",
                     free: "Có bản miễn phí"
+                },
+                                {
+                    id: 268,
+                    name: "AI Writing Check",
+                    description: "Kiểm tra văn bản có phải do AI tạo ra.",
+                    instructions: "Nhập văn bản, AI phân tích và báo cáo. Phù hợp: Giáo dục, xuất bản.",
+                    url: "https://aiwritingcheck.org/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "📝",
+                    note: "Free - Độ chính xác phụ thuộc vào nội dung."
+                },
+                {
+                    id: 269,
+                    name: "Content at Scale AI Content Detector",
+                    description: "Phát hiện nội dung AI với độ chính xác cao.",
+                    instructions: "Nhập văn bản, AI cung cấp kết quả phân tích. Phù hợp: SEO, xuất bản nội dung.",
+                    url: "https://brandwell.ai/ai-content-detector/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "📊",
+                    note: "Có bản Free và bản trả phí - Có thể yêu cầu đăng ký."
+                },
+                {
+                    id: 270,
+                    name: "Copyleaks AI Content Detector",
+                    description: "Kiểm tra nội dung AI và đạo văn.",
+                    instructions: "Tải văn bản hoặc nhập trực tiếp. AI báo cáo tỷ lệ nội dung AI/đạo văn. Phù hợp: Giáo dục, xuất bản.",
+                    url: "https://copyleaks.com/ai-content-detector",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🔍",
+                    note: "Free giới hạn - Có bản trả phí."
+                },
+                {
+                    id: 271,
+                    name: "Crossplag AI Content Detector",
+                    description: "Phát hiện nội dung AI và kiểm tra đạo văn.",
+                    instructions: "Nhập văn bản, AI phân tích và báo cáo. Phù hợp: Học thuật, xuất bản.",
+                    url: "https://crossplag.com/ai-content-detector/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "📄",
+                    note: "Có bản Free và bản trả phí."
+                },
+                {
+                    id: 272,
+                    name: "GPTZero",
+                    description: "Phát hiện văn bản do AI tạo, đặc biệt từ ChatGPT.",
+                    instructions: "Tải file hoặc nhập văn bản. AI cung cấp kết quả phân tích. Phù hợp: Giáo dục, kiểm tra nội dung.",
+                    url: "https://gptzero.me/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🧠",
+                    note: "Free - Độ chính xác cao với tiếng Anh."
+                },
+                {
+                    id: 273,
+                    name: "Hugging Face AI Detector",
+                    description: "Công cụ kiểm tra nội dung AI, tích hợp với Hugging Face.",
+                    instructions: "Nhập văn bản, AI phân tích. Phù hợp: Nghiên cứu, kiểm tra nội dung.",
+                    url: "https://huggingface.co/spaces/openai/openai-detector",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🤖",
+                    note: "Free - Cần tài khoản Hugging Face."
+                },
+                {
+                    id: 274,
+                    name: "OpenAI Text Classifier",
+                    description: "Phát hiện văn bản do AI tạo, từ OpenAI.",
+                    instructions: "Đăng nhập, nhập văn bản. AI báo cáo xác suất nội dung AI. Phù hợp: Kiểm tra nội dung, nghiên cứu.",
+                    url: "https://platform.openai.com/ai-text-classifier",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🔬",
+                    note: "Free - Yêu cầu tài khoản OpenAI."
+                },
+                {
+                    id: 275,
+                    name: "Originality AI",
+                    description: "Kiểm tra đạo văn và nội dung AI với độ chính xác cao.",
+                    instructions: "Đăng ký, nhập văn bản hoặc tải file. AI cung cấp báo cáo chi tiết. Phù hợp: Xuất bản, học thuật.",
+                    url: "https://originality.ai/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "✅",
+                    note: "Trả phí - Bản trả phí tối ưu hơn."
+                },
+                {
+                    id: 276,
+                    name: "UNDETECTABLE.AI",
+                    description: "Kiểm tra và 'nhân bản hóa' nội dung AI để tránh phát hiện.",
+                    instructions: "Nhập văn bản, AI phân tích hoặc chỉnh sửa. Phù hợp: Tạo nội dung tránh kiểm tra AI.",
+                    url: "https://undetectable.ai/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🛡️",
+                    note: "Trả phí - Sử dụng cẩn thận, tránh vi phạm đạo đức."
+                },
+                {
+                    id: 277,
+                    name: "Winston A.I",
+                    description: "Phát hiện nội dung AI và đạo văn, tập trung vào học thuật.",
+                    instructions: "Nhập văn bản hoặc tải file. AI cung cấp báo cáo chi tiết. Phù hợp: Giáo dục, xuất bản.",
+                    url: "https://gowinston.ai/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "📚",
+                    note: "Free giới hạn - Có bản trả phí."
+                },
+                {
+                    id: 278,
+                    name: "Writer AI Content Detector",
+                    description: "Kiểm tra nội dung AI, tích hợp với công cụ viết.",
+                    instructions: "Nhập văn bản, AI phân tích. Phù hợp: Viết nội dung, kiểm tra chất lượng.",
+                    url: "https://writer.com/ai-content-detector/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "✍️",
+                    note: "Free - Hỗ trợ tiếng Anh tốt hơn."
+                },
+                {
+                    id: 279,
+                    name: "ZeroGPT",
+                    description: "Phát hiện văn bản AI, giao diện đơn giản.",
+                    instructions: "Nhập văn bản, AI báo cáo xác suất AI. Phù hợp: Giáo dục, kiểm tra nhanh.",
+                    url: "https://www.zerogpt.com/",
+                    category: "Kiểm tra nội dung từ AI",
+                    icon: "🖋️",
+                    note: "Free - Độ chính xác phụ thuộc vào nội dung."
                 }
+
             ];
         
         // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định ban đầu
