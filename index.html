@@ -267,8 +267,12 @@
                 url: url
             });
         }
+        
+        // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định
+        let categories = loadFromLocalStorage('categories') || defaultCategories;
+        let toolsData = loadFromLocalStorage('toolsData') || defaultToolsData;
 
-        // Cập nhật các công cụ cụ thể theo yêu cầu
+        // Hàm cập nhật các công cụ cụ thể theo yêu cầu
         const updateTools = () => {
             const toolUpdates = [
                 {
@@ -308,15 +312,6 @@
                     icon: "🎭"
                 },
                 {
-                    id: 85,
-                    name: "Minimax AI",
-                    description: "Chatbot AI với khả năng xử lý ngôn ngữ tự nhiên. Có thể được sử dụng trong các cuộc trò chuyện hoặc hỗ trợ công việc.",
-                    instructions: "Tìm kiếm trang chính thức của Minimax AI (khuyến nghị tra Google hoặc Futurepedia). Đăng ký tài khoản và nhập prompt để sử dụng. Lưu ý: Cần xác minh nguồn gốc và thông tin chính thức của công cụ.",
-                    url: "Không tìm thấy link chính thức",
-                    category: "Chatbot & Trợ lý AI",
-                    icon: "🤖"
-                },
-                {
                     id: 106,
                     name: "Grok",
                     description: "AI của xAI, hỗ trợ trả lời câu hỏi, phân tích dữ liệu và tìm kiếm thông tin thời gian thực. Được tích hợp sâu vào nền tảng X.",
@@ -353,137 +348,187 @@
                     icon: "💬"
                 },
                 {
-        id: 2,
-        name: "LeonardoAI",
-        description: "Tạo hình ảnh chuyên cho thiết kế đồ họa, game, và concept art.",
-        instructions: "Đăng ký tài khoản tại leonardo.ai. Chọn kiểu hình ảnh (3D, anime, realistic), nhập prompt hoặc tải hình mẫu, tinh chỉnh thông số (độ phân giải, phong cách).",
-        url: "https://leonardo.ai/",
-        category: "Tạo ảnh AI",
-        icon: "🎨"
-    },
-    {
-        id: 23,
-        name: "StarryAI",
-        description: "Tạo avatar và hình ảnh nghệ thuật từ text, dễ sử dụng.",
-        instructions: "Truy cập starryai.com, đăng ký. Nhập mô tả hình ảnh, chọn phong cách (cartoon, realistic), tải xuống hoặc chỉnh sửa thêm.",
-        url: "https://starryai.com/",
-        category: "Tạo ảnh AI",
-        icon: "🌟"
-    },
-    {
-        id: 44,
-        name: "Dall-E",
-        description: "Công cụ tạo ảnh từ text của OpenAI, mạnh về hình ảnh sáng tạo.",
-        instructions: "Truy cập qua ChatGPT Plus hoặc API OpenAI. Nhập mô tả chi tiết, chọn hình phù hợp từ các kết quả.",
-        url: "https://openai.com/vi-VN/index/dall-e/",
-        category: "Tạo ảnh AI",
-        icon: "🖌️"
-    },
-    {
-        id: 65,
-        name: "Dream.AI",
-        description: "Tạo hình ảnh từ câu lệnh văn bản, hỗ trợ phong cách nghệ thuật đa dạng.",
-        instructions: "Truy cập dream.ai/create, nhập prompt, chọn kiểu hình ảnh và xuất file.",
-        url: "https://dream.ai/create",
-        category: "Tạo ảnh AI",
-        icon: "💭"
-    },
-    {
-        id: 86,
-        name: "Playground",
-        description: "Tái tạo hoặc chỉnh sửa ảnh dựa trên hình ảnh đầu vào hoặc text.",
-        instructions: "Tải lên ảnh hoặc nhập mô tả tại playground.com/design, chỉnh sửa bằng công cụ AI (thay nền, thêm chi tiết).",
-        url: "https://playground.com/design?new_user=1",
-        category: "Tạo ảnh AI",
-        icon: "🛠️"
-    },
-    {
-        id: 107,
-        name: "DeepDreamGenerator",
-        description: "Tạo ảnh nghệ thuật từ text, tự động tối ưu câu lệnh.",
-        instructions: "Nhập mô tả ngắn, chọn phong cách (surreal, realistic, v.v.) tại deepdreamgenerator.com.",
-        url: "https://deepdreamgenerator.com/generate",
-        category: "Tạo ảnh AI",
-        icon: "🌌"
-    },
-    {
-        id: 128,
-        name: "Bing Image Creator",
-        description: "Tạo ảnh từ text, tích hợp với công cụ tìm kiếm Bing.",
-        instructions: "Truy cập bing.com/images/create, đăng nhập tài khoản Microsoft, nhập mô tả, chọn phong cách.",
-        url: "https://www.bing.com/images/create",
-        category: "Tạo ảnh AI",
-        icon: "🔍"
-    },
-    {
-        id: 149,
-        name: "Craiyon",
-        description: "Tạo hình ảnh từ text, giao diện đơn giản, miễn phí.",
-        instructions: "Truy cập craiyon.com, nhập mô tả, chọn phong cách (nếu có) và tải xuống.",
-        url: "https://www.craiyon.com/",
-        category: "Tạo ảnh AI",
-        icon: "📷"
-    },
-    {
-        id: 170,
-        name: "Deep AI Art",
-        description: "Tạo hình ảnh nghệ thuật từ text hoặc chỉnh sửa ảnh với các bộ lọc AI.",
-        instructions: "Truy cập deepai.org, chọn công cụ 'Text to Image' hoặc 'Style Transfer', nhập mô tả hoặc tải ảnh lên, tùy chỉnh phong cách.",
-        url: "https://deepai.org/",
-        category: "Tạo ảnh AI",
-        icon: "🎭"
-    },
-    {
-        id: 191,
-        name: "Fotor AI Image Generator",
-        description: "Tạo và chỉnh sửa ảnh với AI, tích hợp công cụ thiết kế.",
-        instructions: "Truy cập fotor.com/ai-image-generator, đăng ký, nhập prompt hoặc dùng công cụ chỉnh sửa (xóa nền, thêm hiệu ứng).",
-        url: "https://www.fotor.com/ai-image-generator/",
-        category: "Tạo ảnh AI",
-        icon: "🖼️"
-    },
-    {
-        id: 212,
-        name: "Imagine",
-        description: "Tạo hình ảnh từ text với các phong cách đa dạng.",
-        instructions: "Đăng ký tại imagine.art, nhập mô tả chi tiết, chọn phong cách (realistic, anime, v.v.), tải xuống hoặc chỉnh sửa.",
-        url: "https://www.imagine.art/",
-        category: "Tạo ảnh AI",
-        icon: "✨"
-    },
-    {
-        id: 13,
-        name: "Night Cafe",
-        description: "Tạo hình ảnh nghệ thuật từ text, hỗ trợ nhiều phong cách như neural style transfer.",
-        instructions: "Đăng ký tại creator.nightcafe.studio, nhập prompt, chọn phong cách hoặc tải ảnh để chuyển đổi.",
-        url: "https://creator.nightcafe.studio/studio",
-        category: "Tạo ảnh AI",
-        icon: "🌙"
-    },
-    {
-        id: 14,
-        name: "Piclumen",
-        description: "Tạo và chỉnh sửa ảnh miễn phí với AI, giao diện thân thiện.",
-        instructions: "Truy cập piclumen.com, nhập prompt hoặc tải ảnh, dùng công cụ chỉnh sửa (xóa nền, thêm hiệu ứng).",
-        url: "https://www.piclumen.com/",
-        category: "Tạo ảnh AI",
-        icon: "📸"
-    }
-];
-
+                    id: 2,
+                    name: "LeonardoAI",
+                    description: "Tạo hình ảnh chuyên cho thiết kế đồ họa, game, và concept art.",
+                    instructions: "Đăng ký tài khoản tại leonardo.ai. Chọn kiểu hình ảnh (3D, anime, realistic), nhập prompt hoặc tải hình mẫu, tinh chỉnh thông số (độ phân giải, phong cách).",
+                    url: "https://leonardo.ai/",
+                    category: "Tạo ảnh",
+                    icon: "🎨"
+                },
+                {
+                    id: 3,
+                    name: "StarryAI",
+                    description: "Tạo avatar và hình ảnh nghệ thuật từ text, dễ sử dụng.",
+                    instructions: "Truy cập starryai.com, đăng ký. Nhập mô tả hình ảnh, chọn phong cách (cartoon, realistic), tải xuống hoặc chỉnh sửa thêm.",
+                    url: "https://starryai.com/",
+                    category: "Tạo ảnh",
+                    icon: "🌟"
+                },
+                {
+                    id: 4,
+                    name: "Dall-E",
+                    description: "Công cụ tạo ảnh từ text của OpenAI, mạnh về hình ảnh sáng tạo.",
+                    instructions: "Truy cập qua ChatGPT Plus hoặc API OpenAI. Nhập mô tả chi tiết, chọn hình phù hợp từ các kết quả.",
+                    url: "https://openai.com/vi-VN/index/dall-e/",
+                    category: "Tạo ảnh",
+                    icon: "🖌️"
+                },
+                {
+                    id: 5,
+                    name: "Dream.AI",
+                    description: "Tạo hình ảnh từ câu lệnh văn bản, hỗ trợ phong cách nghệ thuật đa dạng.",
+                    instructions: "Truy cập dream.ai/create, nhập prompt, chọn kiểu hình ảnh và xuất file.",
+                    url: "https://dream.ai/create",
+                    category: "Tạo ảnh",
+                    icon: "💭"
+                },
+                {
+                    id: 6,
+                    name: "Playground",
+                    description: "Tái tạo hoặc chỉnh sửa ảnh dựa trên hình ảnh đầu vào hoặc text.",
+                    instructions: "Tải lên ảnh hoặc nhập mô tả tại playground.com/design, chỉnh sửa bằng công cụ AI (thay nền, thêm chi tiết).",
+                    url: "https://playground.com/design?new_user=1",
+                    category: "Tạo ảnh",
+                    icon: "🛠️"
+                },
+                {
+                    id: 7,
+                    name: "DeepDreamGenerator",
+                    description: "Tạo ảnh nghệ thuật từ text, tự động tối ưu câu lệnh.",
+                    instructions: "Nhập mô tả ngắn, chọn phong cách (surreal, realistic, v.v.) tại deepdreamgenerator.com.",
+                    url: "https://deepdreamgenerator.com/generate",
+                    category: "Tạo ảnh",
+                    icon: "🌌"
+                },
+                {
+                    id: 8,
+                    name: "Bing Image Creator",
+                    description: "Tạo ảnh từ text, tích hợp với công cụ tìm kiếm Bing.",
+                    instructions: "Truy cập bing.com/images/create, đăng nhập tài khoản Microsoft, nhập mô tả, chọn phong cách.",
+                    url: "https://www.bing.com/images/create",
+                    category: "Tạo ảnh",
+                    icon: "🔍"
+                },
+                {
+                    id: 9,
+                    name: "Craiyon",
+                    description: "Tạo hình ảnh từ text, giao diện đơn giản, miễn phí.",
+                    instructions: "Truy cập craiyon.com, nhập mô tả, chọn phong cách (nếu có) và tải xuống.",
+                    url: "https://www.craiyon.com/",
+                    category: "Tạo ảnh",
+                    icon: "📷"
+                },
+                {
+                    id: 10,
+                    name: "Deep AI Art",
+                    description: "Tạo hình ảnh nghệ thuật từ text hoặc chỉnh sửa ảnh với các bộ lọc AI.",
+                    instructions: "Truy cập deepai.org, chọn công cụ 'Text to Image' hoặc 'Style Transfer', nhập mô tả hoặc tải ảnh lên, tùy chỉnh phong cách.",
+                    url: "https://deepai.org/",
+                    category: "Tạo ảnh",
+                    icon: "🎭"
+                },
+                {
+                    id: 11,
+                    name: "Fotor AI Image Generator",
+                    description: "Tạo và chỉnh sửa ảnh với AI, tích hợp công cụ thiết kế.",
+                    instructions: "Truy cập fotor.com/ai-image-generator, đăng ký, nhập prompt hoặc dùng công cụ chỉnh sửa (xóa nền, thêm hiệu ứng).",
+                    url: "https://www.fotor.com/ai-image-generator/",
+                    category: "Tạo ảnh",
+                    icon: "🖼️"
+                },
+                {
+                    id: 12,
+                    name: "Imagine",
+                    description: "Tạo hình ảnh từ text với các phong cách đa dạng.",
+                    instructions: "Đăng ký tại imagine.art, nhập mô tả chi tiết, chọn phong cách (realistic, anime, v.v.), tải xuống hoặc chỉnh sửa.",
+                    url: "https://www.imagine.art/",
+                    category: "Tạo ảnh",
+                    icon: "✨"
+                },
+                {
+                    id: 13,
+                    name: "Night Cafe",
+                    description: "Tạo hình ảnh nghệ thuật từ text, hỗ trợ nhiều phong cách như neural style transfer.",
+                    instructions: "Đăng ký tại creator.nightcafe.studio, nhập prompt, chọn phong cách hoặc tải ảnh để chuyển đổi.",
+                    url: "https://creator.nightcafe.studio/studio",
+                    category: "Tạo ảnh",
+                    icon: "🌙"
+                },
+                {
+                    id: 14,
+                    name: "Piclumen",
+                    description: "Tạo và chỉnh sửa ảnh miễn phí với AI, giao diện thân thiện.",
+                    instructions: "Truy cập piclumen.com, nhập prompt hoặc tải ảnh, dùng công cụ chỉnh sửa (xóa nền, thêm hiệu ứng).",
+                    url: "https://www.piclumen.com/",
+                    category: "Tạo ảnh",
+                    icon: "📸"
+                },
+                {
+                    id: 16,
+                    name: "Adobe Firefly",
+                    description: "Công cụ tạo và chỉnh sửa ảnh AI của Adobe, tích hợp với hệ sinh thái Adobe.",
+                    instructions: "Đăng ký tài khoản Adobe, truy cập firefly.adobe.com. Nhập prompt hoặc chỉnh sửa ảnh có sẵn.",
+                    url: "https://firefly.adobe.com/",
+                    category: "Tạo ảnh",
+                    icon: "🔥"
+                },
+                {
+                    id: 17,
+                    name: "Pngmaker.ai",
+                    description: "Tạo ảnh miễn phí từ text, hỗ trợ tiếng Việt, giới hạn 10 ảnh.",
+                    instructions: "Truy cập pngmaker.ai/vi, nhập mô tả bằng tiếng Việt, chọn phong cách và tải xuống.",
+                    url: "https://pngmaker.ai/vi",
+                    category: "Tạo ảnh",
+                    icon: "🖼️"
+                },
+                {
+                    id: 18,
+                    name: "Dreamina",
+                    description: "Tạo ảnh AI tích hợp trong CapCut, hỗ trợ chỉnh sửa nhanh.",
+                    instructions: "Truy cập qua CapCut, chọn công cụ Dreamina, nhập prompt hoặc tải ảnh để chỉnh sửa.",
+                    url: "https://dreamina.capcut.com/ai-tool/image/generate",
+                    category: "Tạo ảnh",
+                    icon: "💤"
+                },
+                // Cập nhật cụ thể cho Công cụ AI 149
+                {
+                    id: 149,
+                    name: "AlphaSense",
+                    description: "Nền tảng tìm kiếm và phân tích thị trường tài chính dựa trên AI, giúp các nhà đầu tư và chuyên gia tài chính đưa ra quyết định thông minh.",
+                    instructions: "Truy cập alphasense.com, đăng ký tài khoản doanh nghiệp. Sử dụng các công cụ tìm kiếm và lọc nâng cao để phân tích dữ liệu thị trường, báo cáo tài chính, và tin tức từ các nguồn đáng tin cậy. Lưu ý: Đây là một công cụ chuyên nghiệp và có phí.",
+                    url: "https://www.alphasense.com/",
+                    category: "Tài chính",
+                    icon: "📊"
+                },
+                // Cập nhật cụ thể cho Công cụ AI 170
+                {
+                    id: 170,
+                    name: "Darktrace",
+                    description: "Một công cụ an ninh mạng hàng đầu, sử dụng AI để phát hiện và phản ứng tự động trước các mối đe dọa mạng, bao gồm cả các cuộc tấn công chưa từng được biết đến.",
+                    instructions: "Truy cập trang web darktrace.com và liên hệ để được demo. Hệ thống Darktrace sẽ tự động học hành vi 'bình thường' của mạng nội bộ và sau đó có thể phát hiện các hành vi bất thường, từ đó đưa ra cảnh báo và hành động tự động. Lưu ý: Đây là giải pháp an ninh mạng cho doanh nghiệp.",
+                    url: "https://www.darktrace.com/",
+                    category: "An ninh mạng",
+                    icon: "🔒"
+                }
+            ];
+            
+            // Xóa các công cụ ví dụ không có url
+            const toolsWithValidUrls = toolsData.filter(tool => tool.url.startsWith('https://'));
+            
+            // Cập nhật các công cụ cụ thể
             toolUpdates.forEach(updatedTool => {
-                const index = defaultToolsData.findIndex(tool => tool.id === updatedTool.id);
+                const index = toolsWithValidUrls.findIndex(tool => tool.id === updatedTool.id);
                 if (index !== -1) {
-                    defaultToolsData[index] = { ...defaultToolsData[index], ...updatedTool };
+                    toolsWithValidUrls[index] = { ...toolsWithValidUrls[index], ...updatedTool };
+                } else {
+                    toolsWithValidUrls.push(updatedTool);
                 }
             });
+
+            // Ghi đè toolsData bằng danh sách đã được lọc và cập nhật
+            toolsData = toolsWithValidUrls;
         };
-
-        updateTools();
-
-        // Lấy dữ liệu từ Local Storage, nếu không có thì dùng dữ liệu mặc định
-        let categories = loadFromLocalStorage('categories') || defaultCategories;
-        let toolsData = loadFromLocalStorage('toolsData') || defaultToolsData;
 
         // Cập nhật biến nextToolId để không bị trùng khi thêm công cụ mới
         let nextToolId = toolsData.length > 0 ? Math.max(...toolsData.map(tool => tool.id)) + 1 : 1;
@@ -768,8 +813,8 @@
                 if (password === 'hakadmin') {
                     isAdmin = true;
                     adminToggleButton.textContent = 'Thoát Quản trị';
-                    adminToggleButton.classList.remove('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
-                    adminToggleButton.classList.add('bg-rose-600', 'hover:bg-rose-700');
+                    adminToggleButton.classList.remove('bg-rose-600', 'hover:bg-rose-700');
+                    adminToggleButton.classList.add('bg-slate-100', 'text-slate-800', 'hover:bg-slate-300');
                     adminCategoryActions.classList.remove('hidden');
                     if (activeCategory !== 'all') {
                         addToolBtn.classList.remove('hidden');
@@ -958,6 +1003,7 @@
 
         // Khởi tạo ứng dụng
         document.addEventListener('DOMContentLoaded', () => {
+            updateTools(); // Gọi hàm cập nhật dữ liệu sau khi toolsData đã được khởi tạo
             createFilterButtons();
             renderTools(toolsData);
         });
